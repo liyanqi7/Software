@@ -3,12 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@mipmap/pic_guidepage_4" />
-
     <Button
         android:id="@+id/btn_login"
         android:layout_width="160dp"
@@ -20,5 +14,12 @@
         android:textColor="#ce102c"
         android:textSize="18sp"
         android:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/pic_guidepage_4" />
 
 </FrameLayout>

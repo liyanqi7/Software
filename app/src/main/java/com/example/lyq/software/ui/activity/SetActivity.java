@@ -50,6 +50,8 @@ public class SetActivity extends BaseActivity implements View.OnClickListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SpUtils.putTokenId(getBaseContext(),Constants.TOKENID,null);
+                        SpUtils.putNick(getBaseContext(),Constants.NICK,null);
+                        SpUtils.putHead(getBaseContext(),Constants.HEAD,null);
                         finish();
                         overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
                     }

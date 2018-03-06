@@ -5,10 +5,12 @@ package com.example.lyq.software.ui.bean;
  */
 
 public class Login {
-    String result,tokenId;
-    public Login(String result, String tokenId){
+    String result,tokenId,nick,head;
+    public Login(String result, String tokenId, String nick, String head){
         this.result = result;
         this.tokenId = tokenId;
+        this.nick = nick;
+        this.head = head;
     }
 
     public String getResult() {
@@ -17,5 +19,13 @@ public class Login {
 
     public String getTokenId() {
         return tokenId;
+    }
+
+    public String getNick() {
+        return nick;
+    }
+
+    public String getHead() {
+        return head;
     }
 }

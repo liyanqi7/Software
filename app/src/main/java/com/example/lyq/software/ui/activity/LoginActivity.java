@@ -38,7 +38,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private Button login;
     private EditText username;
     private EditText password;
-    private String url = Constants.BASE_URL + "Software/loginServlet";
+    private String url = Constants.BASE_URL + "/loginServlet";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String content = String.valueOf(object);
+        String content = String.valueOf(object);//转化成字符串
         RequestBody body = RequestBody.create(MediaType.parse("application/json"),content);
         HttpUtil.post(url, body, new Callback() {
             @Override
@@ -104,10 +104,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 @Override
                 public void run() {
                     LoginActivity.this.finish();
-                    Log.e("1", "run: " + SpUtils.getTokenId(getBaseContext(),Constants.TOKENID));
+                    Log.e("1", "run: " + SpUtils.getNick(getBaseContext(),Constants.NICK));
                     SpUtils.putTokenId(getBaseContext(),Constants.TOKENID,ln.getTokenId().toString());
+                    SpUtils.putNick(getBaseContext(),Constants.NICK,ln.getNick().toString());
+                    SpUtils.putHead(getBaseContext(),Constants.HEAD,ln.getHead().toString());
                     overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-                    Toast.makeText(LoginActivity.this, "登录成功！" + SpUtils.getTokenId(getBaseContext(),Constants.TOKENID), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "登录成功！" + SpUtils.getNick(getBaseContext(),Constants.NICK), Toast.LENGTH_SHORT).show();
                 }
             });
         }else {
@@ -118,7 +120,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
             });
         }
-    }
+}
 
     private void changeHead(Login ln) {
         Log.e("", "changeHead: " + ln.getTokenId().toString() );

@@ -41,4 +41,36 @@ public class SpUtils {
         String result = setPreferences.getString(tokenKey,"");
         return result;
     }
+
+    public static void putNick(Context context, String tokenKey,
+                               String tokenData){
+        SharedPreferences tokenPreferences = context.getSharedPreferences(
+                spFileName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = tokenPreferences.edit();
+        editor.putString(tokenKey, tokenData);
+        editor.commit();
+    }
+
+    public static String getNick(Context context, String tokenKey){
+        SharedPreferences setPreferences = context.getSharedPreferences(
+                spFileName, Context.MODE_PRIVATE);
+        String result = setPreferences.getString(tokenKey,"");
+        return result;
+    }
+
+    public static void putHead(Context context, String tokenKey,
+                               String tokenData){
+        SharedPreferences tokenPreferences = context.getSharedPreferences(
+                spFileName, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = tokenPreferences.edit();
+        editor.putString(tokenKey, tokenData);
+        editor.commit();
+    }
+
+    public static String getHead(Context context, String tokenKey){
+        SharedPreferences setPreferences = context.getSharedPreferences(
+                spFileName, Context.MODE_PRIVATE);
+        String result = setPreferences.getString(tokenKey,"");
+        return result;
+    }
 }

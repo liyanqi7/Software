@@ -7,5 +7,10 @@ package com.example.lyq.software.lib;
 public class Constants {
     public static final String FIRST_OPEN = "first_open";
     public static final String TOKENID = "tokenId";
-    public static final String BASE_URL = "http://192.168.12.245:8080/";
+    public static final String NICK = "nick";
+    public static final String HEAD = "head";
+    public static final String BASE_URL = "http://192.168.3.242:8080/Software";
+    public static final int CAMERA = 1;
+    public static final int ALBUM = 2;
+    public static final int CROP_PHOTO = 3;
 }

@@ -10,7 +10,10 @@ import okhttp3.RequestBody;
 
 public class HttpUtil {
     public static void post(String url, RequestBody body, okhttp3.Callback callback){
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(10, java.util.concurrent.TimeUnit.SECONDS)
+                .readTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
+                .build();
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
