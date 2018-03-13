@@ -2,7 +2,11 @@ package com.example.lyq.software.ui.activity;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.icu.util.Calendar;
+
+import java.io.File;
+import java.util.Calendar;
+
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -10,20 +14,34 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.lyq.software.R;
 import com.example.lyq.software.base.BaseActivity;
 import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.adapter.PhotoPickerAdapter;
+import com.example.lyq.software.utils.HttpUtil;
+import com.example.lyq.software.utils.SpUtils;
 
 import java.util.ArrayList;
 
 import me.iwf.photopicker.PhotoPicker;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+import static com.example.lyq.software.lib.Constants.BASE_URL;
 
 public class AddRequirementsActivity extends BaseActivity implements View.OnClickListener {
 
@@ -37,6 +55,9 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
     private ArrayList<String> imgPaths = new ArrayList<>();
     private PhotoPickerAdapter adapter;
     private String TAG = "test";
+    private Button btnSubmit;
+    private EditText etDescript;
+    private EditText etPrice;
 
 
     @Override
@@ -48,22 +69,25 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
     }
 
     private void initView() {
-        tvType = (TextView) findViewById(R.id.tv_type);
         ivBack = (ImageView) findViewById(R.id.iv_back);
+        etDescript = (EditText) findViewById(R.id.et_descript);
+        tvType = (TextView) findViewById(R.id.tv_type);
+        etPrice = (EditText) findViewById(R.id.et_price);
         tvBegin = (TextView) findViewById(R.id.tv_begin);
         tvEnd = (TextView) findViewById(R.id.tv_end);
         gridView = (GridView) findViewById(R.id.gridView);
+        btnSubmit = (Button) findViewById(R.id.btn_submit);
         adapter = new PhotoPickerAdapter(imgPaths);
         ivBack.setOnClickListener(this);
         tvBegin.setOnClickListener(this);
         tvEnd.setOnClickListener(this);
+        btnSubmit.setOnClickListener(this);
         gridView.setAdapter(adapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            //点击gridView中的一项
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == imgPaths.size()){
-                    PhotoPicker.builder()
+                    PhotoPicker.builder()//点击添加图片时，调用PhotoPicker,添加图片的position是等于imgPaths.size()的
                             .setPhotoCount(9)
                             .setShowCamera(true)
                             .setSelected(imgPaths)
@@ -91,16 +115,15 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
                 imgPaths.clear();
                 ArrayList<String> photos = data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
                 imgPaths.addAll(photos);//将图片路径添加到imgPaths中去
-                for (int i = 0; i < imgPaths.size(); i++) {
-//                    Log.e(TAG, "onActivityResult: "+ imgPaths.get(i) );
-                }
                 adapter.notifyDataSetChanged();
             }
         }
-
         if (resultCode == RESULT_OK && requestCode >= 0 && requestCode <= 8) {
             imgPaths.remove(requestCode);
             adapter.notifyDataSetChanged();
+        }
+        for (int i = 0; i < imgPaths.size(); i++) {
+            Log.e(TAG, "onActivityResult: "+ imgPaths.get(i) );
         }
     }
 
@@ -124,7 +147,84 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
             case R.id.tv_end:
                 selectDate(END);
                 break;
+            case R.id.btn_submit:
+                uploadImage();
+                break;
+            default:
+                break;
         }
+    }
+
+    private void uploadImage() {
+        new NetworkTask().execute();
+    }
+
+    /**
+     * 访问网络AsyncTask,访问网络在子线程进行并返回主线程通知访问的结果
+     */
+    class NetworkTask extends AsyncTask<String, Integer, String> {
+
+        //将在执行实际的后台操作前被UI 线程调用
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        //onPreExecute()方法执行后马上执行，该方法运行在后台线程中
+        @Override
+        protected String doInBackground(String... params) {
+            return doPost();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if(!"error".equals(result)) {
+//                SpUtils.putHead(getBaseContext(),Constants.HEAD,result);
+//                Log.i(TAG, "图片地址 " + BASE_URL + result);
+//                Glide.with(getBaseContext())
+//                        .load(BASE_URL + result)
+//                        .into(ivHead);
+            }
+        }
+    }
+
+    private String doPost() {
+        OkHttpClient mOkHttpClient = new OkHttpClient();
+        String result = "error";
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        builder.setType(MultipartBody.FORM);
+        // 添加上传的参数
+        builder.addFormDataPart("tokenId", SpUtils.getTokenId(getBaseContext(),Constants.TOKENID));
+        builder.addFormDataPart("descript",etDescript.getText().toString());
+        builder.addFormDataPart("type",tvType.getText().toString());
+        builder.addFormDataPart("price",etPrice.getText().toString());
+        builder.addFormDataPart("beginTime",tvBegin.getText().toString());
+        builder.addFormDataPart("endTime",tvEnd.getText().toString());
+        // 添加上传图片
+        for (int i = 0; i < imgPaths.size(); i++) {
+            Log.e(TAG, "doPost: "+ imgPaths.get(i));
+            builder.addFormDataPart("image"+i, imgPaths.get(i),
+                    RequestBody.create(MediaType.parse("image/jpeg"), new File(imgPaths.get(i))));
+        }
+        RequestBody requestBody = builder.build();
+        Request.Builder reqBuilder = new Request.Builder();
+        Request request = reqBuilder
+                .url(Constants.BASE_URL + "/releaseServlet")
+                .post(requestBody)
+                .build();
+        Log.e(TAG, "请求地址 " + Constants.BASE_URL + "/releaseServlet");
+        try{
+            Response response = mOkHttpClient.newCall(request).execute();
+            Log.d(TAG, "响应码 " + response.code());
+            if (response.isSuccessful()) {
+                String resultValue = response.body().string();
+                Log.d(TAG, "响应体 " + resultValue);
+                return resultValue;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

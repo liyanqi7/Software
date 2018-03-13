@@ -37,16 +37,18 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="240dp"
+            android:layout_height="300dp"
             android:background="@color/white"
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/et_descript"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:gravity="left|top"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:hint="具体描述你想要什么，能更快的找到适合您的服务商，如：需求背景、适应终端等"
                 android:inputType="textMultiLine"
                 android:maxLines="6"
@@ -61,12 +63,14 @@
             <GridView
                 android:id="@+id/gridView"
                 android:layout_width="match_parent"
-                android:layout_height="270dp"
+                android:layout_height="200dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@android:color/white"
                 android:columnWidth="90dp"
                 android:gravity="center"
                 android:horizontalSpacing="5dp"
-                android:numColumns="3"
+                android:numColumns="4"
                 android:scrollbars="none"
                 android:stretchMode="columnWidth"
                 android:verticalSpacing="5dp" />
@@ -136,11 +140,13 @@
                 android:layout_height="20dp"
                 android:background="@color/back_gray" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/et_price"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:text="0.00"
+                android:background="@null"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -216,6 +222,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/btn_submit"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"

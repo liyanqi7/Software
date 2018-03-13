@@ -29,11 +29,16 @@
         <activity android:name=".ui.activity.SetActivity" />
         <activity android:name=".ui.activity.PersonalActivity" />
         <activity android:name=".ui.activity.AddRequirementsActivity" />
-        <activity android:name=".ui.activity.EnlargePicActivity"/>
-        <activity android:name="me.iwf.photopicker.PhotoPickerActivity"
+        <activity android:name=".ui.activity.EnlargePicActivity" />
+        <activity
+            android:name="me.iwf.photopicker.PhotoPickerActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name="me.iwf.photopicker.PhotoPagerActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name="me.iwf.photopicker.PhotoPagerActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".ui.activity.CategoryActivity" />
+        <activity android:name=".ui.activity.WebActivity" />
+        <activity android:name=".ui.activity.AppActivity"></activity>
     </application>
 
 </manifest>

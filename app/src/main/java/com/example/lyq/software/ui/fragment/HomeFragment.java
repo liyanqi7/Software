@@ -1,6 +1,7 @@
 package com.example.lyq.software.ui.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.example.lyq.software.R;
+import com.example.lyq.software.ui.activity.AppActivity;
+import com.example.lyq.software.ui.activity.WebActivity;
 import com.example.lyq.software.ui.adapter.HomeBannerAdapter;
 
 
-public class HomeFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnTouchListener {
+public class HomeFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnTouchListener, View.OnClickListener {
 
     private View view;
     Context context;
@@ -25,13 +28,37 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     private ViewPager viewPager;
     private LinearLayout llIndicator;
     private int prePosition = 0;
+    private LinearLayout llWeb;
+    private LinearLayout llApp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home,container,false);
+        initView();
         initCarousel();
         return view;
+    }
+
+    private void initView() {
+//        Intent intent = new Intent(getContext(),);
+        llWeb = (LinearLayout) view.findViewById(R.id.ll_web);
+        llApp = (LinearLayout) view.findViewById(R.id.ll_app);
+        llWeb.setOnClickListener(this);
+        llApp.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_web:
+                startActivity(new Intent(getContext(), WebActivity.class));
+                break;
+            case R.id.ll_app:
+                startActivity(new Intent(getContext(), AppActivity.class));
+                break;
+        }
+
     }
 
     Handler handler = new Handler(){
@@ -100,4 +127,5 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         }
         return false;
     }
+
 }

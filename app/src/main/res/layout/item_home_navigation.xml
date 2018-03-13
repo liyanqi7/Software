@@ -11,6 +11,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/ll_web"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -31,6 +32,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_app"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -51,6 +53,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_weChat"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -71,6 +74,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_ui"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -91,6 +95,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_h5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -119,6 +124,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/ll_solution"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -140,6 +146,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_data"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -160,6 +167,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_safe"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -180,6 +188,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_test"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -200,6 +209,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_software"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -231,6 +241,7 @@
         android:weightSum="5">
 
         <LinearLayout
+            android:id="@+id/ll_domain"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -251,6 +262,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_cloud"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -271,6 +283,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_other"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

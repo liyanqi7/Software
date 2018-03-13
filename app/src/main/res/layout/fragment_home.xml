@@ -5,18 +5,19 @@
     android:orientation="vertical"
     tools:context="com.example.lyq.software.ui.fragment.HomeFragment">
 
-    <include layout="@layout/item_home_title"/>
+    <include layout="@layout/item_home_title" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include layout="@layout/item_home_carousel"/>
+            <include layout="@layout/item_home_carousel" />
             <!--<LinearLayout-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="180dp"-->
@@ -57,9 +58,9 @@
 
             <!--</LinearLayout>-->
 
-            <include layout="@layout/item_home_navigation"/>
+            <include layout="@layout/item_home_navigation" />
 
-            <include layout="@layout/item_home_recommend"/>
+            <include layout="@layout/item_home_recommend" />
 
         </LinearLayout>
 
