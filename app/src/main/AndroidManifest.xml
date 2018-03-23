@@ -3,6 +3,8 @@
     package="com.example.lyq.software">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <!--网络访问权限-->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
@@ -38,7 +40,10 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".ui.activity.CategoryActivity" />
         <activity android:name=".ui.activity.WebActivity" />
-        <activity android:name=".ui.activity.AppActivity"></activity>
+        <activity android:name=".ui.activity.AppActivity" />
+        <activity android:name=".base.ServerActivity" />
+        <activity android:name=".ui.activity.ReleaseDetialActivity" />
+        <activity android:name=".ui.activity.TypeTwoActivity"></activity>
     </application>
 
 </manifest>

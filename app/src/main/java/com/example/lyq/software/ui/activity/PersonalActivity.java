@@ -259,7 +259,6 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 .url(Constants.BASE_URL + "/changeHeadServlet")
                 .post(requestBody)
                 .build();
-
         Log.d(TAG, "请求地址 " + Constants.BASE_URL + "/changeHeadServlet");
         try{
             Response response = mOkHttpClient.newCall(request).execute();

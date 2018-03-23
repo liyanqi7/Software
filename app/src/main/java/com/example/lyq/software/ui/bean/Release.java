@@ -1,16 +1,20 @@
 package com.example.lyq.software.ui.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by lyq on 2018/3/12.
  */
 
-public class Release {
+public class Release implements Serializable{
 
     String releaseId;
     String userName;
     String descript;
     String type;
+    String typeTwo;
     String price;
+    String date;
     String beginTime;
     String endTime;
 
@@ -19,13 +23,16 @@ public class Release {
     }
 
     //需要参数的构造函数
-    public Release(String releaseId, String userName, String descript, String type, String price, String beginTime, String endTime){
+    public Release(String releaseId, String userName, String descript, String type, String typeTwo,
+                   String price, String date, String beginTime, String endTime){
         super();
         this.releaseId = releaseId;
         this.userName = userName;
         this.descript = descript;
         this.type = type;
+        this.typeTwo = typeTwo;
         this.price = price;
+        this.date = date;
         this.beginTime = beginTime;
         this.endTime = endTime;
     }
@@ -62,12 +69,28 @@ public class Release {
         return type;
     }
 
+    public void setTypeTwo(String typeTwo) {
+        this.typeTwo = typeTwo;
+    }
+
+    public String getTypeTwo() {
+        return typeTwo;
+    }
+
     public void setPrice(String price){
         this.price = price;
     }
 
     public String getPrice(){
         return price;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public void setBeginTime(String beginTime){

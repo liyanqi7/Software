@@ -28,6 +28,7 @@ import com.example.lyq.software.R;
 import com.example.lyq.software.base.BaseActivity;
 import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.adapter.PhotoPickerAdapter;
+import com.example.lyq.software.utils.DateTimeUtil;
 import com.example.lyq.software.utils.HttpUtil;
 import com.example.lyq.software.utils.SpUtils;
 
@@ -58,7 +59,9 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
     private Button btnSubmit;
     private EditText etDescript;
     private EditText etPrice;
-
+    private TextView tvTypeTwo;
+    private LinearLayout llType;
+    int REQUEST_TYPETWO = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +74,16 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
     private void initView() {
         ivBack = (ImageView) findViewById(R.id.iv_back);
         etDescript = (EditText) findViewById(R.id.et_descript);
+        llType = (LinearLayout) findViewById(R.id.ll_type);
         tvType = (TextView) findViewById(R.id.tv_type);
+        tvTypeTwo = (TextView) findViewById(R.id.tv_typeTwo);
         etPrice = (EditText) findViewById(R.id.et_price);
         tvBegin = (TextView) findViewById(R.id.tv_begin);
         tvEnd = (TextView) findViewById(R.id.tv_end);
         gridView = (GridView) findViewById(R.id.gridView);
         btnSubmit = (Button) findViewById(R.id.btn_submit);
         adapter = new PhotoPickerAdapter(imgPaths);
+        llType.setOnClickListener(this);
         ivBack.setOnClickListener(this);
         tvBegin.setOnClickListener(this);
         tvEnd.setOnClickListener(this);
@@ -109,6 +115,10 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_TYPETWO && resultCode == RESULT_OK){//获得二级类型的有结果的返回
+            tvTypeTwo.setText(data.getStringExtra("typeTwo").toString());
+        }
+
         if (resultCode == RESULT_OK && requestCode == PhotoPicker.REQUEST_CODE) {
             if (data != null) {
                 Log.e(TAG, "onActivityResult: " + imgPaths.size() );
@@ -141,6 +151,13 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
                 this.finish();
                 overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
             break;
+            case R.id.ll_type:
+                Intent intent = new Intent();
+                intent.setClass(AddRequirementsActivity.this,TypeTwoActivity.class);
+                intent.putExtra("type",tvType.getText().toString());
+                startActivityForResult(intent,REQUEST_TYPETWO);
+                overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+                break;
             case R.id.tv_begin:
                 selectDate(BEGIN);
                 break;
@@ -194,10 +211,13 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
         MultipartBody.Builder builder = new MultipartBody.Builder();
         builder.setType(MultipartBody.FORM);
         // 添加上传的参数
+        String date = DateTimeUtil.getSWAHDate();
         builder.addFormDataPart("tokenId", SpUtils.getTokenId(getBaseContext(),Constants.TOKENID));
         builder.addFormDataPart("descript",etDescript.getText().toString());
         builder.addFormDataPart("type",tvType.getText().toString());
         builder.addFormDataPart("price",etPrice.getText().toString());
+        builder.addFormDataPart("date",date);
+        builder.addFormDataPart("typeTwo",tvTypeTwo.getText().toString());
         builder.addFormDataPart("beginTime",tvBegin.getText().toString());
         builder.addFormDataPart("endTime",tvEnd.getText().toString());
         // 添加上传图片

@@ -1,21 +1,101 @@
 package com.example.lyq.software.ui.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.lyq.software.R;
+import com.example.lyq.software.lib.Constants;
+import com.example.lyq.software.ui.adapter.MessageAdapter;
+import com.example.lyq.software.ui.bean.Order;
+import com.example.lyq.software.utils.HttpUtil;
+import com.example.lyq.software.utils.SpUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MessageFragment extends Fragment {
+
+    private List<Order> orderList = new ArrayList<Order>();;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_message, container, false);
+        View view = inflater.inflate(R.layout.fragment_message, container, false);
+        initData();
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        Log.e("message", "onCreateView: "+orderList.size() );
+        if (orderList != null && orderList.size() > 0){
+            MessageAdapter adapter = new MessageAdapter(orderList,this.getActivity());
+            recyclerView.setAdapter(adapter);
+        }
+        return view;
+    }
+
+    private void initData() {
+        String url = Constants.BASE_URL + "/applyTaskServlet";
+        String uploadName = SpUtils.getTokenId(getContext(), Constants.TOKENID);
+        RequestBody body = new FormBody.Builder()
+                .add("uploadName",uploadName)
+                .build();
+        HttpUtil.post(url, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                try {
+                     parseJSONWithGSON(responseData);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void parseJSONWithGSON(String responseData) throws JSONException {
+        JSONObject object = new JSONObject(responseData);
+        JSONArray arrayOrder = object.getJSONArray("orderList");
+        orderList.clear();
+        Order order = null;
+        for (int i = 0; i < arrayOrder.length(); i++) {
+            order = new Order();
+            JSONObject obj = arrayOrder.getJSONObject(i);
+            order.setReleaseId(obj.getString("releaseId"));
+            order.setUploadName(obj.getString("uploadName"));
+            order.setApplyName(obj.getString("applyName"));
+            order.setDescript(obj.getString("descript"));
+            order.setDate(obj.getString("date"));
+//            Log.e("message", "parseJSONWithGSON: "+order.getDescript() );
+//            Log.e("message", "parseJSONWithGSON: "+order.getDate() );
+            order.setHead(obj.getString("head"));
+            order.setBrowse(obj.getString("browse"));
+            orderList.add(order);
+        }
+        Log.e("message", "parseJSONWithGSON: "+ orderList.size() );
     }
 }

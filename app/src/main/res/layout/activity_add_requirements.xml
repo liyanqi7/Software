@@ -45,12 +45,14 @@
                 android:id="@+id/et_descript"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:gravity="left|top"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="@null"
+                android:gravity="left|top"
                 android:hint="具体描述你想要什么，能更快的找到适合您的服务商，如：需求背景、适应终端等"
                 android:inputType="textMultiLine"
+                android:lineSpacingExtra="6dp"
                 android:maxLines="6"
                 android:minLines="6"
                 android:textSize="14sp" />
@@ -58,7 +60,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/back_gray" />
+                android:background="@color/back_green" />
 
             <GridView
                 android:id="@+id/gridView"
@@ -78,6 +80,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_type"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
@@ -104,6 +107,13 @@
                 android:layout_marginLeft="20dp"
                 android:text="网站制作"
                 android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_typeTwo"
+                android:layout_marginLeft="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

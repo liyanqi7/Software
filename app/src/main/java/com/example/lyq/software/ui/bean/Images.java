@@ -1,10 +1,12 @@
 package com.example.lyq.software.ui.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by lyq on 2018/3/12.
  */
 
-public class Images {
+public class Images implements Serializable{
 
     private String releaseId;
     private String image1;
@@ -48,7 +50,7 @@ public class Images {
         this.image1 = image1;
     }
 
-    public String getImag1(){
+    public String getImage1(){
         return image1;
     }
 
