@@ -58,6 +58,10 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
     private TextView tvApply;
     private String userName;
     private TextView tvDate;
+    private LinearLayout llCollection;
+    private ImageView ivCollection;
+    private TextView tvCollection;
+    private String collectionState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +72,9 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
         user = (Login) getIntent().getSerializableExtra("userData");
         userName = SpUtils.getTokenId(getBaseContext(), Constants.TOKENID);
         Log.e("user", "onCreate: " + userName);
-        if (!(userName.isEmpty())){ //判断是否为空，不能用(userName==null)
-            doJudge();
+        if (!(userName.isEmpty())){ //判断是否为空，不能用(userName == null)
+            doJudgeApply();//判断订单是被否申请
+            doJudgeCollection();//判断订单是否被收藏,初始化collectionState的值
         }
         initView();
     }
@@ -86,6 +91,10 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
         llAply = (LinearLayout) findViewById(R.id.ll_apply);
         tvApply = (TextView) findViewById(R.id.tv_apply);
         llAply.setOnClickListener(this);
+        llCollection = (LinearLayout) findViewById(R.id.ll_collection);
+        ivCollection = (ImageView) findViewById(R.id.iv_collection);
+        tvCollection = (TextView) findViewById(R.id.tv_collection);
+        llCollection.setOnClickListener(this);
         ImageView image1 = (ImageView) findViewById(R.id.image1);
         ImageView image2 = (ImageView) findViewById(R.id.image2);
         ImageView image3 = (ImageView) findViewById(R.id.image3);
@@ -129,7 +138,7 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.ll_apply:
                 if (!userName.isEmpty()){
-                    new NetworkTask().execute();
+                    doApply();
                 }else {
                     this.finish();
                     startActivity(new Intent(this,LoginActivity.class));
@@ -137,24 +146,129 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
                     Toast.makeText(this, "请先登录在申请...", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.ll_collection:
+                if (!userName.isEmpty()){
+//                    doJudgeCollection();
+                    if (collectionState.equals("true")){
+                        doDeleteCollection();
+                    } else {
+                        doCollection();
+                    }
+                }else {
+                    this.finish();
+                    startActivity(new Intent(this,LoginActivity.class));
+                    overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+                    Toast.makeText(this, "请先登录在收藏...", Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 
-    class NetworkTask extends AsyncTask<String, Integer, String> {
+    /**
+     * 取消收藏
+     */
+    private void doDeleteCollection() {
+        String url = Constants.BASE_URL + "/deleteCollectionServlet";
+        RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
+                .add("releaseId",release.getReleaseId())
+                .add("userName",userName)
+                .build();
+        HttpUtil.post(url, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+            }
 
-        @Override
-        protected String doInBackground(String... params) {
-            doApply();
-            return null;
-        }
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        collectionState = "false";
+                        ivCollection.setImageResource(R.mipmap.icon_collection);
+                        tvCollection.setText("收藏");
+                        tvCollection.setTextColor(getResources().getColor(R.color.text_gray));
+                    }
+                });
+            }
+        });
     }
 
-    private void doJudge() {
+    /**
+     * 收藏订单
+     */
+    private void doCollection() {
+        String url = Constants.BASE_URL + "/insertCollectionServlet";
+        RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
+                .add("releaseId",release.getReleaseId())
+                .add("userName",userName)
+                .build();
+        HttpUtil.post(url, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                Gson gson = new Gson();
+                Result rs = gson.fromJson(responseData, Result.class);
+                if (rs.getResult().toString().equals("true")){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            collectionState = "true";
+                            ivCollection.setImageResource(R.mipmap.icon_collection_change);
+                            tvCollection.setText("取消收藏");
+                            tvCollection.setTextColor(getResources().getColor(R.color.text_orange));
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 判断订单是否已经被收藏
+     */
+    private void doJudgeCollection() {
+        String url = Constants.BASE_URL + "/judgeCollectionServlet";
+        RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
+                .add("releaseId",release.getReleaseId())
+                .add("userName",userName)
+                .build();
+        HttpUtil.post(url, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                Gson gson = new Gson();
+                Result rs = gson.fromJson(responseData, Result.class);
+                collectionState = rs.getResult().toString();
+                if (collectionState.equals("true")){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ivCollection.setImageResource(R.mipmap.icon_collection_change);
+                            tvCollection.setText("取消收藏");
+                            tvCollection.setTextColor(getResources().getColor(R.color.text_orange));
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    /**
+     * 判断订单用户是否已经被申请
+     */
+    private void doJudgeApply() {
         String url = Constants.BASE_URL + "/judgeApplyServlet";
         RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
                 .add("releaseId",release.getReleaseId())
@@ -184,6 +298,9 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
         });
     }
 
+    /**
+     * 申请订单任务
+     */
     private void doApply() {
         JSONObject object = new JSONObject();
         String releaseId = release.getReleaseId();

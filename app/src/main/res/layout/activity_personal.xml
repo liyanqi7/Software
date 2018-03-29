@@ -50,7 +50,7 @@
     <LinearLayout
         android:id="@+id/ll_pick"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:gravity="center_vertical"
         android:background="#fff"
         android:orientation="horizontal">
@@ -77,8 +77,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_head"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@mipmap/icon_login" />
 
             <ImageView

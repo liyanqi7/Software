@@ -2,6 +2,7 @@ package com.example.lyq.software.ui.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.lyq.software.R;
 import com.example.lyq.software.lib.Constants;
+import com.example.lyq.software.ui.activity.OrderProcessActivity;
 import com.example.lyq.software.ui.bean.Order;
 import com.example.lyq.software.utils.DateTimeUtil;
 import com.example.lyq.software.utils.HttpUtil;
@@ -79,14 +81,24 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         String timeLength = DateTimeUtil.formatFriendly(date);
         holder.tvTime.setText(timeLength);
         if (order.getBrowse().equals("true")){
-            holder.icCircle.setVisibility(View.INVISIBLE);
+            holder.icCircle.setVisibility(View.INVISIBLE); //判断消息的浏览状态
         }
         holder.orderView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 holder.icCircle.setVisibility(View.INVISIBLE);
-                String releaseId = order.getReleaseId();
-                changeBrowse(releaseId);
+                final String releaseId = order.getReleaseId();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        changeBrowse(releaseId);
+                    }
+                }).start();
+                Intent intent = new Intent();
+                intent.putExtra("applyName",order.getApplyName());
+                intent.putExtra("releaseId",order.getReleaseId());
+                intent.setClass(mActivity,OrderProcessActivity.class);
+                mActivity.startActivity(intent);
             }
         });
     }

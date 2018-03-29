@@ -55,7 +55,7 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-    //Fragment的生命周期
+    //注意:Fragment的生命周期
     @Override
     public void onResume() {
         super.onResume();

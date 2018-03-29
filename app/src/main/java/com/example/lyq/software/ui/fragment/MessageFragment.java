@@ -36,21 +36,25 @@ import okhttp3.Response;
 public class MessageFragment extends Fragment {
 
     private List<Order> orderList = new ArrayList<Order>();;
+    private MessageAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_message, container, false);
-        initData();
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         Log.e("message", "onCreateView: "+orderList.size() );
-        if (orderList != null && orderList.size() > 0){
-            MessageAdapter adapter = new MessageAdapter(orderList,this.getActivity());
-            recyclerView.setAdapter(adapter);
-        }
+        adapter = new MessageAdapter(orderList,this.getActivity());
+        recyclerView.setAdapter(adapter);
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
     }
 
     private void initData() {
@@ -90,12 +94,15 @@ public class MessageFragment extends Fragment {
             order.setApplyName(obj.getString("applyName"));
             order.setDescript(obj.getString("descript"));
             order.setDate(obj.getString("date"));
-//            Log.e("message", "parseJSONWithGSON: "+order.getDescript() );
-//            Log.e("message", "parseJSONWithGSON: "+order.getDate() );
             order.setHead(obj.getString("head"));
             order.setBrowse(obj.getString("browse"));
             orderList.add(order);
         }
-        Log.e("message", "parseJSONWithGSON: "+ orderList.size() );
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 }

@@ -3,19 +3,16 @@ package com.example.lyq.software.ui.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.lyq.software.R;
 import com.example.lyq.software.lib.Constants;
-import com.example.lyq.software.ui.activity.AppActivity;
 import com.example.lyq.software.ui.activity.ReleaseDetialActivity;
 import com.example.lyq.software.ui.bean.Images;
 import com.example.lyq.software.ui.bean.Login;
@@ -43,16 +40,13 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
 
         View releaseView;
         ImageView ivImage;
-        TextView tvType;
         TextView tvDescript;
-        TextView tvBegin;
-        TextView tvEnd;
         TextView tvPrice;
         CircleImageView ciHead;
         TextView tvNick;
-        private final TextView tvDate;
-        private final ImageView ivImage2;
-        private final ImageView ivImage3;
+        TextView tvDate;
+        ImageView ivImage2;
+        ImageView ivImage3;
 
         public ViewHolder(View view) {
             super(view);
@@ -62,20 +56,17 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
             ivImage = (ImageView) view.findViewById(R.id.iv_image);
             ivImage2 = (ImageView) view.findViewById(R.id.iv_image2);
             ivImage3 = (ImageView) view.findViewById(R.id.iv_image3);
-//            tvType = (TextView) view.findViewById(R.id.tv_type);
             tvDescript = (TextView) view.findViewById(R.id.tv_descript);
             tvDate = (TextView) view.findViewById(R.id.tv_date);
-//            tvBegin = (TextView) view.findViewById(R.id.tv_begin);
-//            tvEnd = (TextView) view.findViewById(R.id.tv_end);
             tvPrice = (TextView) view.findViewById(R.id.tv_price);
         }
     }
 
     public ReleaseAdapter(List<Release> releaseList, List<Images> imagesList, List<Login> userList, Activity activity) {
-        mReleaseList = releaseList;
-        mImagesList = imagesList;
-        mUserList = userList;
-        mActivity = activity;
+        this.mReleaseList = releaseList;
+        this.mImagesList = imagesList;
+        this.mUserList = userList;
+        this.mActivity = activity;
         Log.e(TAG, "ReleaseAdapter: "+ mReleaseList.size());
     }
 
@@ -95,7 +86,6 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
                 intent.putExtra("imageData",images);
                 intent.putExtra("userData",user);
                 mActivity.startActivity(intent);
-//                Toast.makeText(mActivity, "我是" + release.getReleaseId()+release.getDescript(), Toast.LENGTH_SHORT).show();
             }
         });
         return holder;
@@ -109,7 +99,6 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
         Glide.with(mActivity)
                 .load(Constants.BASE_URL + users.getHead())
                 .into(holder.ciHead);
-        holder.tvNick.setText(users.getNick());
         Glide.with(mActivity)
                 .load(Constants.BASE_URL + images.getImage1())
                 .into(holder.ivImage);
@@ -119,15 +108,15 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
         Glide.with(mActivity)
                 .load(Constants.BASE_URL + images.getImage3())
                 .into(holder.ivImage3);
-//        holder.tvType.setText(release.getTypeTwo());
+        holder.tvNick.setText(users.getNick());
         holder.tvDescript.setText(release.getDescript());
         Date date = DateTimeUtil.strToDateHHMMSS(release.getDate());
         String timeLength = DateTimeUtil.formatFriendly(date);
         holder.tvDate.setText(timeLength);
-//        holder.tvBegin.setText(release.getBeginTime());
-//        holder.tvEnd.setText(release.getEndTime());
         holder.tvPrice.setText(release.getPrice());
-        Log.e(TAG, "onBindViewHolder: "+ release.getDescript() );
+        Log.e(TAG, "mReleaseList: "+ mReleaseList.size() );
+        Log.e(TAG, "mImagesList: "+ mImagesList.size() );
+        Log.e(TAG, "mUserList: "+ mUserList.size());
     }
 
     @Override

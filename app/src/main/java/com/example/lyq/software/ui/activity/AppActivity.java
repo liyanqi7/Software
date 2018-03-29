@@ -28,15 +28,22 @@ import okhttp3.Response;
 
 public class AppActivity extends ServerActivity {
 
+    private ReleaseAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app);
-        initServerData("APP开发");
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        ReleaseAdapter adapter = new ReleaseAdapter(releaseList,imagesList,userList,AppActivity.this);
+        adapter = new ReleaseAdapter(releaseList,imagesList,userList,AppActivity.this);
         recyclerView.setAdapter(adapter);
+        initServerData("APP开发");
+    }
+
+    @Override
+    public void updateUI() {
+        adapter.notifyDataSetChanged();
     }
 }

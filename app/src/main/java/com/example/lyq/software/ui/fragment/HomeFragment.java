@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import com.example.lyq.software.R;
 import com.example.lyq.software.ui.activity.AppActivity;
+import com.example.lyq.software.ui.activity.WeChatActivity;
 import com.example.lyq.software.ui.activity.WebActivity;
 import com.example.lyq.software.ui.adapter.HomeBannerAdapter;
 
@@ -30,6 +31,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     private int prePosition = 0;
     private LinearLayout llWeb;
     private LinearLayout llApp;
+    private LinearLayout llWeChat;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,8 +46,10 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 //        Intent intent = new Intent(getContext(),);
         llWeb = (LinearLayout) view.findViewById(R.id.ll_web);
         llApp = (LinearLayout) view.findViewById(R.id.ll_app);
+        llWeChat = (LinearLayout) view.findViewById(R.id.ll_weChat);
         llWeb.setOnClickListener(this);
         llApp.setOnClickListener(this);
+        llWeChat.setOnClickListener(this);
     }
 
     @Override
@@ -56,6 +60,9 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                 break;
             case R.id.ll_app:
                 startActivity(new Intent(getContext(), AppActivity.class));
+                break;
+            case R.id.ll_weChat:
+                startActivity(new Intent(getContext(), WeChatActivity.class));
                 break;
         }
 
