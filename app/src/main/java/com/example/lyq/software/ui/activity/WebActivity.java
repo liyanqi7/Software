@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.lyq.software.R;
 import com.example.lyq.software.base.BaseActivity;
 import com.example.lyq.software.base.ServerActivity;
+import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.adapter.ReleaseAdapter;
 
 public class WebActivity extends ServerActivity {
@@ -30,6 +31,9 @@ public class WebActivity extends ServerActivity {
         initServerData("网站建设");//如果先初始化数据，启动子线程进行网络请求。继续执行adapter时，数据可能尚未请求完成，传入adapter的数据可能为空
     }
 
+    public String getURL() {
+        return Constants.BASE_URL + "/categoryServlet";
+    }
     /**
      * 继承父类抽象方法的实现
      */

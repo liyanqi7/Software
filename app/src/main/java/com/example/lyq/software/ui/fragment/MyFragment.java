@@ -17,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.example.lyq.software.R;
 import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.activity.LoginActivity;
+import com.example.lyq.software.ui.activity.MyApplyActivity;
+import com.example.lyq.software.ui.activity.MyUploadActivity;
 import com.example.lyq.software.ui.activity.PersonalActivity;
 import com.example.lyq.software.ui.activity.SetActivity;
 import com.example.lyq.software.ui.bean.Login;
@@ -33,6 +35,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
     private ImageView set;
     private TextView name;
     private CircleImageView ivHead;
+    private LinearLayout llMyUpload;
+    private LinearLayout llMyApply;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,8 +46,12 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         set = (ImageView) view.findViewById(R.id.set);
         name = (TextView) view.findViewById(R.id.username);
         ivHead = (CircleImageView) view.findViewById(R.id.iv_head);
+        llMyUpload = (LinearLayout) view.findViewById(R.id.ll_myUpload);
+        llMyApply = (LinearLayout) view.findViewById(R.id.ll_myApply);
         head.setOnClickListener(this);
         set.setOnClickListener(this);
+        llMyUpload.setOnClickListener(this);
+        llMyApply.setOnClickListener(this);
 //        String tokenId = SpUtils.getTokenId(getContext(),Constants.TOKENID);
 //        Log.e("1", "onCreateView: " + tokenId);
 //        if (!tokenId.toString().isEmpty())
@@ -80,10 +88,6 @@ public class MyFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void refresh() {
-        view.invalidate();
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -101,6 +105,16 @@ public class MyFragment extends Fragment implements View.OnClickListener {
             case R.id.set:
                 startActivity(new Intent(new Intent(getContext(), SetActivity.class)));
                 getActivity().overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+                break;
+            case R.id.ll_myUpload:
+                Intent uploadIntent = new Intent(getContext(), MyUploadActivity.class);
+                uploadIntent.putExtra("type","我的发布");
+                startActivity(uploadIntent);
+                break;
+            case R.id.ll_myApply:
+                Intent applyIntent = new Intent(getContext(), MyApplyActivity.class);
+                applyIntent.putExtra("type","我的订单");
+                startActivity(applyIntent);
                 break;
         }
     }

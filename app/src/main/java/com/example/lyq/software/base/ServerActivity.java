@@ -30,7 +30,7 @@ import okhttp3.Response;
 
 public abstract class ServerActivity extends Activity {
 
-    String url = Constants.BASE_URL + "/categoryServlet";
+//    String url = Constants.BASE_URL + "/categoryServlet";
     String TAG = "result";
     public List<Release> releaseList = new ArrayList<Release>();
     public List<Images> imagesList = new ArrayList<Images>();
@@ -43,12 +43,14 @@ public abstract class ServerActivity extends Activity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    public void initServerData(final String type) {
+    public abstract String getURL();
 
+    public void initServerData(final String type) {
+        
         FormBody formBody = new FormBody.Builder()
                 .add("type", type)
                 .build();
-        HttpUtil.post(url, formBody, new Callback() {
+        HttpUtil.post(getURL(), formBody, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
 

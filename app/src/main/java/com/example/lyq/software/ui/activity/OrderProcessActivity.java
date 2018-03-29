@@ -22,6 +22,7 @@ public class OrderProcessActivity extends BaseActivity implements View.OnClickLi
 
     private LinearLayout llDelete;
     private Intent intent;
+    private LinearLayout llAgreen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,44 +32,52 @@ public class OrderProcessActivity extends BaseActivity implements View.OnClickLi
         intent = getIntent();
     }
 
-    private void initData() {
-
-    }
-
     private void initView() {
         llDelete = (LinearLayout) findViewById(R.id.ll_delete);
+        llAgreen = (LinearLayout) findViewById(R.id.ll_agreen);
         llDelete.setOnClickListener(this);
+        llAgreen.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ll_delete:
-                String applyName = intent.getStringExtra("applyName");
-                String releaseId = intent.getStringExtra("releaseId");
-                String url = Constants.BASE_URL + "/deleteApplyServlet";
-                RequestBody body = new FormBody.Builder()
-                        .add("applyName",applyName)
-                        .add("releaseId",releaseId)
-                        .build();
-                HttpUtil.post(url, body, new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                OrderProcessActivity.this.finish();
-                                overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
-                            }
-                        });
-                    }
-                });
+                String state = "未通过";
+                doChangeState(state);
+                break;
+            case R.id.ll_agreen:
+                String agreenState = "已同意";
+                doChangeState(agreenState);
                 break;
         }
+    }
+
+    private void doChangeState(String state) {
+        String url = Constants.BASE_URL + "/changeApplyState";
+        String applyName = intent.getStringExtra("applyName");
+        String releaseId = intent.getStringExtra("releaseId");
+        RequestBody body = new FormBody.Builder()
+                .add("applyName",applyName)
+                .add("releaseId",releaseId)
+                .add("state",state)
+                .build();
+        HttpUtil.post(url, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OrderProcessActivity.this.finish();
+                        overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+                    }
+                });
+            }
+        });
     }
 }

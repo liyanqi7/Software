@@ -45,7 +45,9 @@
         <activity android:name=".ui.activity.ReleaseDetialActivity" />
         <activity android:name=".ui.activity.TypeTwoActivity" />
         <activity android:name=".ui.activity.OrderProcessActivity" />
-        <activity android:name=".ui.activity.WeChatActivity"></activity>
+        <activity android:name=".ui.activity.WeChatActivity" />
+        <activity android:name=".ui.activity.MyUploadActivity" />
+        <activity android:name=".ui.activity.MyApplyActivity"></activity>
     </application>
 
 </manifest>

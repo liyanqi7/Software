@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.example.lyq.software.R;
 import com.example.lyq.software.base.ServerActivity;
+import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.adapter.ReleaseAdapter;
 
 public class WeChatActivity extends ServerActivity {
@@ -23,6 +24,10 @@ public class WeChatActivity extends ServerActivity {
         adapter = new ReleaseAdapter(releaseList,imagesList,userList,WeChatActivity.this);
         recyclerView.setAdapter(adapter);
         initServerData("微信开发");
+    }
+
+    public String getURL() {
+        return Constants.BASE_URL + "/categoryServlet";
     }
 
     @Override

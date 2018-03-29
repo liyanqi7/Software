@@ -14,19 +14,14 @@
         android:layout_alignParentStart="true">
 
         <ImageView
+            android:id="@+id/imageView4"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@mipmap/icon_bg_2"/>
+            android:background="@mipmap/icon_bg_2" />
 
     </LinearLayout>
 
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0.5dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:background="@color/back_gray"-->
-        <!--android:layout_marginBottom="?attr/actionBarSize"-->
-        <!--android:id="@+id/view" />-->
+    <!--注释：注意wrap_content和match_parent上在占据空间的的差别-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,29 +34,28 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@color/back_gray" />
+                android:background="@color/back_gray"/>
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:layout_marginTop="7dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
-                android:background="@mipmap/icon_collection" />
+                android:src="@mipmap/icon_add_attention"/>
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="7dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp"
                 android:gravity="center"
-                android:text="收藏"
+                android:text="关注"
                 android:textColor="@color/text_gray_2" />
 
         </LinearLayout>
@@ -84,10 +78,11 @@
                 android:background="@color/back_gray"/>
 
             <ImageView
-                android:layout_marginTop="7dp"
+                android:id="@+id/imageView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/icon_phone"/>
+                android:layout_marginTop="7dp"
+                android:src="@mipmap/icon_phone" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -133,6 +128,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_agreen"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"

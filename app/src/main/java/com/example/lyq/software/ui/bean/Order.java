@@ -13,6 +13,7 @@ public class Order {
     private String descript;
     private String date;
     private String browse;
+    private String state;
 
     public Order(){
 
@@ -83,5 +84,13 @@ public class Order {
 
     public void setBrowse(String browse){
         this.browse = browse;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
