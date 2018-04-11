@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--设置外边框的样式-->
+    <stroke
+        android:width="0dp"
+        android:color="@color/white"/>
+
+    <!--设置填充色-->
+    <solid android:color="@color/back_green"/>
+
+    <!--设置弧度-->
+    <corners android:radius="2dp"/>
+
+    <!--设置内边距-->
+    <padding
+        android:bottom="2dp"
+        android:left="2dp"
+        android:right="2dp"
+        android:top="2dp"/>
+
+</shape>

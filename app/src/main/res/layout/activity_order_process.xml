@@ -6,26 +6,12 @@
     android:layout_height="match_parent"
     tools:context="com.example.lyq.software.ui.activity.OrderProcessActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@mipmap/icon_bg_2" />
-
-    </LinearLayout>
+    <include layout="@layout/item_shop_head"/>
 
     <!--注释：注意wrap_content和match_parent上在占据空间的的差别-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:weightSum="5"
         android:layout_height="?attr/actionBarSize"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
@@ -105,6 +91,7 @@
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:visibility="gone"
             android:gravity="center">
 
             <View
@@ -132,14 +119,31 @@
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"
-            android:background="@color/back_orange_1">
+            android:background="@color/back_orange_1"
+            android:visibility="gone">
 
             <TextView
-                android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="立即同意"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_hire"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:background="@color/back_orange_1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="雇佣他"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 

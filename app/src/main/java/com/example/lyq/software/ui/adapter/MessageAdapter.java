@@ -16,9 +16,16 @@ import com.bumptech.glide.Glide;
 import com.example.lyq.software.R;
 import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.activity.OrderProcessActivity;
+import com.example.lyq.software.ui.bean.Login;
 import com.example.lyq.software.ui.bean.Order;
+import com.example.lyq.software.ui.bean.Shop;
+import com.example.lyq.software.ui.bean.Volume;
 import com.example.lyq.software.utils.DateTimeUtil;
 import com.example.lyq.software.utils.HttpUtil;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Date;
@@ -38,6 +45,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     private List<Order> mOrderList;
     private Activity mActivity;
+    private Intent intent;
 
     static class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -86,27 +94,89 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         holder.orderView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.icCircle.setVisibility(View.INVISIBLE);
                 final String releaseId = order.getReleaseId();
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        changeBrowse(releaseId);
-                    }
-                }).start();
-                Intent intent = new Intent();
+                final String applyName = order.getApplyName();
+                if (order.getBrowse().equals("false")){
+                    holder.icCircle.setVisibility(View.INVISIBLE);
+                    changeBrowse(releaseId,applyName);//改变消息的浏览状态
+                }
+                getApplyShop(applyName);
+                intent = new Intent();
                 intent.putExtra("applyName",order.getApplyName());
                 intent.putExtra("releaseId",order.getReleaseId());
+//                intent.putExtra("shopData",shop);
+//                intent.putExtra("userData",user);
+//                intent.putExtra("volumeData",volume);
+                intent.putExtra("stateData","Process");
                 intent.setClass(mActivity,OrderProcessActivity.class);
                 mActivity.startActivity(intent);
             }
         });
     }
 
-    private void changeBrowse(String releaseId) {
+    private void getApplyShop(String applyName) {
+        String url = Constants.BASE_URL + "/applyShopServlet";
+        RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
+                .add("userName",applyName)
+                .build();
+        HttpUtil.post(url, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                try {
+                    parseJSONWithGSON(responseData);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void parseJSONWithGSON(String responseData) throws JSONException {
+        JSONObject object = new JSONObject(responseData);
+        JSONArray shopArray = object.getJSONArray("shopList");
+        JSONArray userArray = object.getJSONArray("userList");
+        JSONArray volumeArray = object.getJSONArray("countList");
+        Shop shop = null;
+        Login user = null;
+        Volume volume = null;
+        Log.d("TAG", "parseJSONWithGSON: " + shopArray);
+        Log.d("TAG", "parseJSONWithGSON: " + userArray);
+        Log.e("TAG", "parseJSONWithGSON: " + volumeArray);
+        for (int i = 0; i < shopArray.length(); i++) {
+            shop = new Shop();
+            JSONObject obj = shopArray.getJSONObject(i);
+            shop.setUserName(obj.getString("userName"));
+            shop.setCompany(obj.getString("company"));
+            shop.setProvince(obj.getString("province"));
+            shop.setCity(obj.getString("city"));
+            shop.setNature(obj.getString("nature"));
+        }
+        for (int i = 0; i < userArray.length(); i++) {
+            user = new Login();
+            JSONObject obj = userArray.getJSONObject(i);
+            user.setHead(obj.getString("head"));
+        }
+        for (int i = 0; i < volumeArray.length(); i++) {
+            volume = new Volume();
+            JSONObject obj = volumeArray.getJSONObject(i);
+            volume.setSum(obj.getString("volume"));
+        }
+        intent.putExtra("shopData",shop);
+        intent.putExtra("userData",user);
+        intent.putExtra("volumeData",volume);
+    }
+
+    private void changeBrowse(String releaseId , String applyName) {
         String url = Constants.BASE_URL + "/changeBrowseServlet";
         RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
                 .add("releaseId",releaseId)
+                .add("applyName",applyName)
                 .build();
         HttpUtil.post(url, body, new Callback() {
             @Override

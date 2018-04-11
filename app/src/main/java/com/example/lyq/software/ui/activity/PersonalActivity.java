@@ -78,8 +78,13 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal);
-        tokenId = SpUtils.getTokenId(this, Constants.TOKENID);
-        nick = SpUtils.getNick(this, Constants.NICK);
+        initView();
+        initData();
+        initNickDialog();
+        initPwdDialog();
+    }
+
+    private void initView() {
         back = (ImageView) findViewById(R.id.back);
         btnNick = (LinearLayout) findViewById(R.id.btn_nick);
         btnPwd = (LinearLayout) findViewById(R.id.btn_pwd);
@@ -92,18 +97,17 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
         btnNick.setOnClickListener(this);
         btnPwd.setOnClickListener(this);
         llPick.setOnClickListener(this);
+    }
+
+    private void initData() {
+        tokenId = SpUtils.getTokenId(this, Constants.TOKENID);
+        nick = SpUtils.getNick(this, Constants.NICK);
         String head = SpUtils.getHead(getBaseContext(),Constants.HEAD).toString();
         if (!head.isEmpty()){
             Glide.with(getBaseContext())
                     .load(BASE_URL + head)
                     .into(ivHead);
         }
-        initMessage();
-        initNickDialog();
-        initPwdDialog();
-    }
-
-    private void initMessage() {
         if (!tokenId.isEmpty()){
             tvNick.setText(nick);
         }
@@ -259,13 +263,13 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 .url(Constants.BASE_URL + "/changeHeadServlet")
                 .post(requestBody)
                 .build();
-        Log.d(TAG, "请求地址 " + Constants.BASE_URL + "/changeHeadServlet");
+        Log.e(TAG, "请求地址 " + Constants.BASE_URL + "/changeHeadServlet");
         try{
             Response response = mOkHttpClient.newCall(request).execute();
-            Log.d(TAG, "响应码 " + response.code());
+            Log.e(TAG, "响应码 " + response.code());
             if (response.isSuccessful()) {
                 String resultValue = response.body().string();
-                Log.d(TAG, "响应体 " + resultValue);
+                Log.e(TAG, "响应体 " + resultValue);
                 return resultValue;
             }
         } catch (Exception e) {
@@ -360,7 +364,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 @Override
                 public void run() {
                     refresh();
-                    initMessage();
+//                    initData();
                     Toast.makeText(PersonalActivity.this, "昵称修改成功!", Toast.LENGTH_SHORT).show();
                 }
             });

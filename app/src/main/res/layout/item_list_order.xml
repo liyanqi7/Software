@@ -32,18 +32,22 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/textView9"
                     android:layout_width="match_parent"
-                    android:text="订单申请"
                     android:layout_height="30dp"
+                    android:gravity="center_vertical"
+                    android:text="订单申请"
                     android:textColor="@color/text_black"
-                    android:textSize="16sp"
-                    android:gravity="center_vertical"/>
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tv_descript"
                     android:layout_width="match_parent"
-                    android:layout_height="20dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:lineSpacingExtra="6dp"
+                    android:maxLines="1"
                     android:text="订单简介"/>
 
                 <TextView

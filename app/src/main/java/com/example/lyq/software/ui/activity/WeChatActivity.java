@@ -10,6 +10,9 @@ import com.example.lyq.software.base.ServerActivity;
 import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.adapter.ReleaseAdapter;
 
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+
 public class WeChatActivity extends ServerActivity {
 
     private ReleaseAdapter adapter;
@@ -21,13 +24,24 @@ public class WeChatActivity extends ServerActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ReleaseAdapter(releaseList,imagesList,userList,WeChatActivity.this);
+        String state = "upload";
+        adapter = new ReleaseAdapter(releaseList,imagesList,userList,state,WeChatActivity.this);
         recyclerView.setAdapter(adapter);
-        initServerData("微信开发");
+        initServerData();
     }
 
     public String getURL() {
         return Constants.BASE_URL + "/categoryServlet";
+    }
+
+    @Override
+    public RequestBody getBody() {
+        String type = "微信开发";
+        FormBody body = new FormBody.Builder()
+                .add("type", type)
+                .add("state", "发布中")
+                .build();
+        return body;
     }
 
     @Override

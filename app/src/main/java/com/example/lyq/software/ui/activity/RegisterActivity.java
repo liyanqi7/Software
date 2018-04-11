@@ -29,7 +29,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     private Button register;
     private EditText username;
     private EditText password;
-    private String url = Constants.BASE_URL + "Software/registerServlet";
+    private String url = Constants.BASE_URL + "/registerServlet";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -33,6 +33,7 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
     private List<Release> mReleaseList;
     private List<Images> mImagesList;
     private List<Login> mUserList;
+    private String mState;
     private Activity mActivity;
     String TAG = "result";
 
@@ -62,10 +63,11 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
         }
     }
 
-    public ReleaseAdapter(List<Release> releaseList, List<Images> imagesList, List<Login> userList, Activity activity) {
+    public ReleaseAdapter(List<Release> releaseList, List<Images> imagesList, List<Login> userList, String state, Activity activity) {
         this.mReleaseList = releaseList;
         this.mImagesList = imagesList;
         this.mUserList = userList;
+        this.mState = state;
         this.mActivity = activity;
         Log.e(TAG, "ReleaseAdapter: "+ mReleaseList.size());
     }
@@ -77,7 +79,7 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
         holder.releaseView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position = holder.getAdapterPosition();
+                int position = holder.getAdapterPosition();//案列第一行代码，RecyclerView的点击事件
                 Release release = mReleaseList.get(position);
                 Images images = mImagesList.get(position);
                 Login user = mUserList.get(position);
@@ -85,6 +87,7 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
                 intent.putExtra("releaseData",release);
                 intent.putExtra("imageData",images);
                 intent.putExtra("userData",user);
+                intent.putExtra("state",mState);
                 mActivity.startActivity(intent);
             }
         });
@@ -101,12 +104,19 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
                 .into(holder.ciHead);
         Glide.with(mActivity)
                 .load(Constants.BASE_URL + images.getImage1())
+//                .placeholder(R.mipmap.ic_launcher)
+                .dontAnimate()
                 .into(holder.ivImage);
+        Log.e(TAG, "getImage1: " + images.getImage1());
         Glide.with(mActivity)
                 .load(Constants.BASE_URL + images.getImage2())
+//                .placeholder(R.mipmap.ic_launcher)
+                .dontAnimate()
                 .into(holder.ivImage2);
         Glide.with(mActivity)
                 .load(Constants.BASE_URL + images.getImage3())
+//                .placeholder(R.mipmap.ic_launcher)
+                .dontAnimate()
                 .into(holder.ivImage3);
         holder.tvNick.setText(users.getNick());
         holder.tvDescript.setText(release.getDescript());

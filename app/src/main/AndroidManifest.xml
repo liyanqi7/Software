@@ -47,7 +47,12 @@
         <activity android:name=".ui.activity.OrderProcessActivity" />
         <activity android:name=".ui.activity.WeChatActivity" />
         <activity android:name=".ui.activity.MyUploadActivity" />
-        <activity android:name=".ui.activity.MyApplyActivity"></activity>
+        <activity android:name=".ui.activity.MyApplyActivity" />
+        <activity android:name=".ui.activity.MyCollectionActivity" />
+        <activity
+            android:name=".ui.activity.MyShopActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ui.activity.CreateShopActivity"></activity>
     </application>
 
 </manifest>

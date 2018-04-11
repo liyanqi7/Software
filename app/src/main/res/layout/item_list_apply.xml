@@ -64,6 +64,7 @@
             android:text="2天前"/>
 
         <TextView
+            android:id="@+id/tv_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -73,6 +74,19 @@
             android:textSize="12sp"
             android:textColor="@color/text_orange"
             android:text="删除"/>
+
+        <TextView
+            android:id="@+id/tv_connect"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="right"
+            android:textSize="12sp"
+            android:textColor="@color/text_orange"
+            android:text="联系商家"/>
 
     </LinearLayout>
 

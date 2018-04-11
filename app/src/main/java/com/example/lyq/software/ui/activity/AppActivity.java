@@ -24,6 +24,7 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class AppActivity extends ServerActivity {
@@ -37,13 +38,24 @@ public class AppActivity extends ServerActivity {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ReleaseAdapter(releaseList,imagesList,userList,AppActivity.this);
+        String state = "upload";
+        adapter = new ReleaseAdapter(releaseList,imagesList,userList,state,AppActivity.this);
         recyclerView.setAdapter(adapter);
-        initServerData("APP开发");
+        initServerData();
     }
 
     public String getURL() {
         return Constants.BASE_URL + "/categoryServlet";
+    }
+
+    @Override
+    public RequestBody getBody() {
+        String type = "APP开发";
+        FormBody body = new FormBody.Builder()
+                .add("type", type)
+                .add("state", "发布中")
+                .build();
+        return body;
     }
 
     @Override

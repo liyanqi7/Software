@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <include layout="@layout/item_fragment_my_head"/>
+        <include layout="@layout/item_fragment_my_head" />
 
     </LinearLayout>
 
@@ -18,7 +18,7 @@
         android:layout_height="70dp">
 
         <LinearLayout
-            android:id="@+id/ll_myApply"
+            android:id="@+id/ll_myShop"
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@mipmap/icon_order"/>
+                android:background="@mipmap/icon_shop"/>
 
             <TextView
                 android:layout_marginTop="5dp"
@@ -36,11 +36,12 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_gray"
                 android:textSize="12sp"
-                android:text="我的订单"/>
+                android:text="我的店铺"/>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_myCollection"
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_attention"
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -125,6 +127,36 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@mipmap/icon_cancel"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="14sp"
+            android:text="正在发布"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/back_gray"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_myRunning"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@mipmap/icon_upload"/>
 
         <TextView
@@ -132,7 +164,37 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:textSize="14sp"
-            android:text="我的发布"/>
+            android:text="案例进行"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/back_gray"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_myFinish"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/icon_finish"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="14sp"
+            android:text="完成案列"/>
 
     </LinearLayout>
 
@@ -161,36 +223,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:textSize="14sp"
-            android:text="添加案列"/>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/back_gray"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@mipmap/icon_finish"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:textSize="14sp"
-            android:text="完成案列"/>
+            android:text="发布新任务"/>
 
     </LinearLayout>
 

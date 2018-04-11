@@ -1,5 +1,6 @@
 package com.example.lyq.software.ui.activity;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ public class MyApplyActivity extends BaseActivity {
 
     private List<Order> orderList = new ArrayList<Order>();;
     private MyApplyAdapter adapter;
+    private SwipeRefreshLayout refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +43,42 @@ public class MyApplyActivity extends BaseActivity {
         TextView tvType = (TextView) findViewById(R.id.tv_type);
         tvType.setText(type);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        refresh = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        refresh.setColorSchemeResources(R.color.colorPrimary);
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                initData();
+//                refreshApply();
+            }
+        });
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MyApplyAdapter(orderList);
         recyclerView.setAdapter(adapter);
         initData();
     }
+
+    private void refreshApply() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initData();
+                        refresh.setRefreshing(false);
+                    }
+                });
+            }
+        }).start();
+    }
+
     private void initData() {
         String url = Constants.BASE_URL + "/myApplyServlet";
         String applyName = SpUtils.getTokenId(this, Constants.TOKENID);
@@ -94,6 +126,7 @@ public class MyApplyActivity extends BaseActivity {
             @Override
             public void run() {
                 adapter.notifyDataSetChanged();
+                refresh.setRefreshing(false);
             }
         });
     }

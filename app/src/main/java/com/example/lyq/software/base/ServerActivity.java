@@ -26,6 +26,7 @@ import java.util.Map;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public abstract class ServerActivity extends Activity {
@@ -45,12 +46,11 @@ public abstract class ServerActivity extends Activity {
 
     public abstract String getURL();
 
-    public void initServerData(final String type) {
-        
-        FormBody formBody = new FormBody.Builder()
-                .add("type", type)
-                .build();
-        HttpUtil.post(getURL(), formBody, new Callback() {
+    public abstract RequestBody getBody();
+
+    public void initServerData() {
+
+        HttpUtil.post(getURL(), getBody(), new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
 

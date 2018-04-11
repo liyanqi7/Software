@@ -1,6 +1,7 @@
 package com.example.lyq.software.ui.activity;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import java.io.File;
@@ -9,6 +10,7 @@ import java.util.Calendar;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -165,7 +167,22 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
                 selectDate(END);
                 break;
             case R.id.btn_submit:
-                uploadImage();
+                AlertDialog dialog = new AlertDialog.Builder(this)
+                        .setTitle("确认发布")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                uploadImage();
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
                 break;
             default:
                 break;

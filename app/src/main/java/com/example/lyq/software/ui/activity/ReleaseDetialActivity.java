@@ -62,14 +62,19 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
     private ImageView ivCollection;
     private TextView tvCollection;
     private String collectionState;
+    private String state;
+    private TextView tvConfirm;
+    private TextView tvCancel;
+    private LinearLayout llUpload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_release_detial);
-        release = (Release) getIntent().getSerializableExtra("releaseData");
+        release = (Release) getIntent().getSerializableExtra("releaseData");//接收对象参数的传递
         images = (Images) getIntent().getSerializableExtra("imageData");
         user = (Login) getIntent().getSerializableExtra("userData");
+        state = getIntent().getStringExtra("state");
         userName = SpUtils.getTokenId(getBaseContext(), Constants.TOKENID);
         Log.e("user", "onCreate: " + userName);
         if (!(userName.isEmpty())){ //判断是否为空，不能用(userName == null)
@@ -77,9 +82,28 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
             doJudgeCollection();//判断订单是否被收藏,初始化collectionState的值
         }
         initView();
+        initState();
+    }
+
+    private void initState() {
+        llUpload.setVisibility(View.GONE);
+        tvCancel.setVisibility(View.GONE);
+        tvConfirm.setVisibility(View.GONE);
+        if (state.equals("任务中")){
+            tvConfirm.setVisibility(View.VISIBLE);
+        }
+        if (state.equals("upload")){
+            llUpload.setVisibility(View.VISIBLE);
+        }
+        if (state.equals("发布中")){
+            tvCancel.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initView() {
+        tvConfirm = (TextView) findViewById(R.id.tv_confirm);
+        tvCancel = (TextView) findViewById(R.id.tv_cancel);
+        llUpload = (LinearLayout) findViewById(R.id.ll_upload);
         tvType = (TextView) findViewById(R.id.tv_type);
         ciHead = (CircleImageView) findViewById(R.id.ci_head);
         tvNick = (TextView) findViewById(R.id.tv_nick);
