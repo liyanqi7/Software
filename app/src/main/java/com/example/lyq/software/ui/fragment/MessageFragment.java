@@ -13,7 +13,10 @@ import android.widget.Toast;
 import com.example.lyq.software.R;
 import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.adapter.MessageAdapter;
+import com.example.lyq.software.ui.bean.Login;
 import com.example.lyq.software.ui.bean.Order;
+import com.example.lyq.software.ui.bean.Shop;
+import com.example.lyq.software.ui.bean.Volume;
 import com.example.lyq.software.utils.HttpUtil;
 import com.example.lyq.software.utils.SpUtils;
 
@@ -35,7 +38,11 @@ import okhttp3.Response;
 
 public class MessageFragment extends Fragment {
 
-    private List<Order> orderList = new ArrayList<Order>();;
+    private List<Order> orderList = new ArrayList<Order>();
+    private List<Shop> shopList = new ArrayList<Shop>();
+    private List<Login> userList = new ArrayList<Login>();
+    private List<Volume> volumeList = new ArrayList<Volume>();
+//    private String applyName;
     private MessageAdapter adapter;
 
     @Override
@@ -46,18 +53,20 @@ public class MessageFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         Log.e("message", "onCreateView: "+orderList.size() );
-        adapter = new MessageAdapter(orderList,this.getActivity());
+        adapter = new MessageAdapter(orderList,shopList,userList,volumeList,this.getActivity());
         recyclerView.setAdapter(adapter);
+        getApplyMessage();
+//        getShopMessage();
         return view;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        initData();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//
+//    }
 
-    private void initData() {
+    private void getApplyMessage() {
         String url = Constants.BASE_URL + "/applyTaskServlet";
         String uploadName = SpUtils.getTokenId(getContext(), Constants.TOKENID);
         RequestBody body = new FormBody.Builder()
@@ -73,7 +82,7 @@ public class MessageFragment extends Fragment {
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
                 try {
-                     parseJSONWithGSON(responseData);
+                    parseJSONWithGSON(responseData);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -96,7 +105,73 @@ public class MessageFragment extends Fragment {
             order.setDate(obj.getString("date"));
             order.setHead(obj.getString("head"));
             order.setBrowse(obj.getString("browse"));
+            String applyName = order.getApplyName();
             orderList.add(order);
+            getShopMessage(applyName);
+        }
+        /**
+         * ERROR,当在此处获得ShopMessage时，只能获得一次ShopMessage的值，传递到Adapter中点击条目明显出错。
+         * 但是，当只传递一个对象被adapter重复调用为什么也报错？？？？？？
+         */
+//        getShopMessage(applyName);
+    }
+
+    private void getShopMessage(String applyName) {
+        String url = Constants.BASE_URL + "/applyShopServlet";
+            RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
+                    .add("userName",applyName)
+                    .build();
+        HttpUtil.post(url, body, new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+
+                }
+
+                @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                try {
+                    parseSHOPWithGSON(responseData);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void parseSHOPWithGSON(String responseData) throws JSONException {
+        JSONObject object = new JSONObject(responseData);
+        JSONArray shopArray = object.getJSONArray("shopList");
+        JSONArray userArray = object.getJSONArray("userList");
+        JSONArray volumeArray = object.getJSONArray("countList");
+        Shop shop = null;
+        Login user = null;
+        Volume volume = null;
+        Log.e("TAG", "parseJSONWithGSON: " + shopArray);
+        Log.e("TAG", "parseJSONWithGSON: " + userArray);
+        Log.e("TAG", "parseJSONWithGSON: " + volumeArray);
+        for (int i = 0; i < shopArray.length(); i++) {
+            shop = new Shop();
+            JSONObject obj = shopArray.getJSONObject(i);
+            shop.setUserName(obj.getString("userName"));
+            shop.setCompany(obj.getString("company"));
+            shop.setProvince(obj.getString("province"));
+            shop.setCity(obj.getString("city"));
+            shop.setNature(obj.getString("nature"));
+            shopList.add(shop);
+        }
+//        Log.e("TAG", "parseSHOPWithGSON: " + shop.getCompany() );
+        for (int i = 0; i < userArray.length(); i++) {
+            user = new Login();
+            JSONObject obj = userArray.getJSONObject(i);
+            user.setHead(obj.getString("head"));
+            userList.add(user);
+        }
+        for (int i = 0; i < volumeArray.length(); i++) {
+            volume = new Volume();
+            JSONObject obj = volumeArray.getJSONObject(i);
+            volume.setSum(obj.getString("volume"));
+            volumeList.add(volume);
         }
         getActivity().runOnUiThread(new Runnable() {
             @Override

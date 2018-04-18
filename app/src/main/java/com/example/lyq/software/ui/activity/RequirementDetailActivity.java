@@ -11,7 +11,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,15 +22,12 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.lyq.software.R;
 import com.example.lyq.software.base.BaseActivity;
 import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.adapter.PhotoPickerAdapter;
 import com.example.lyq.software.utils.DateTimeUtil;
-import com.example.lyq.software.utils.HttpUtil;
 import com.example.lyq.software.utils.SpUtils;
 
 import java.util.ArrayList;
@@ -44,9 +40,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-import static com.example.lyq.software.lib.Constants.BASE_URL;
-
-public class AddRequirementsActivity extends BaseActivity implements View.OnClickListener {
+public class RequirementDetailActivity extends BaseActivity implements View.OnClickListener {
 
     private TextView tvType;
     private ImageView ivBack;
@@ -101,12 +95,12 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
                             .setSelected(imgPaths)
                             .setShowGif(true)
                             .setPreviewEnabled(true)
-                            .start(AddRequirementsActivity.this, PhotoPicker.REQUEST_CODE);
+                            .start(RequirementDetailActivity.this, PhotoPicker.REQUEST_CODE);
                 }else {
                     Bundle bundle = new Bundle();
                     bundle.putStringArrayList("imgPaths",imgPaths);
                     bundle.putInt("position",position);
-                    Intent intent = new Intent(AddRequirementsActivity.this,EnlargePicActivity.class);
+                    Intent intent = new Intent(RequirementDetailActivity.this,EnlargePicActivity.class);
                     intent.putExtras(bundle);
                     startActivityForResult(intent,position);
                 }
@@ -155,7 +149,7 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
             break;
             case R.id.ll_type:
                 Intent intent = new Intent();
-                intent.setClass(AddRequirementsActivity.this,TypeTwoActivity.class);
+                intent.setClass(RequirementDetailActivity.this,TypeTwoActivity.class);
                 intent.putExtra("type",tvType.getText().toString());
                 startActivityForResult(intent,REQUEST_TYPETWO);
                 overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
@@ -275,7 +269,7 @@ public class AddRequirementsActivity extends BaseActivity implements View.OnClic
                 } else {
                     tvEnd.setText(year + "-" + (month + 1) + "-" + dayOfMonth);
                 }
-//                Toast.makeText(AddRequirementsActivity.this,year + "-" + (month + 1) + "-" + dayOfMonth,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(RequirementDetailActivity.this,year + "-" + (month + 1) + "-" + dayOfMonth,Toast.LENGTH_SHORT).show();
             }
         },c.get(Calendar.YEAR),c.get(Calendar.MONTH),c.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.setCancelable(false);

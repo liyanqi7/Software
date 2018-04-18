@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.lyq.software.ui.activity.RequirementDetailActivity">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/back_orange_1"
-        android:gravity="center_vertical">
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/icon_back_white_left"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="描述需求"
-            android:textSize="20sp"
-            android:textColor="@color/white"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+        android:background="@color/back_gray_2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/back_gray"
         android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/back_orange_1"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_back_white_left"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="描述案例"
+                android:textSize="20sp"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +42,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/et_descript"
+                android:id="@+id/et_design"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -50,7 +50,7 @@
                 android:layout_marginTop="5dp"
                 android:background="@null"
                 android:gravity="left|top"
-                android:hint="具体描述你想要什么，能更快的找到适合您的服务商，如：需求背景、适应终端等"
+                android:hint="关于产品的设计方案"
                 android:inputType="textMultiLine"
                 android:lineSpacingExtra="6dp"
                 android:maxLines="6"
@@ -80,10 +80,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_type"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="20dp"
             android:background="@color/white"
             android:gravity="center_vertical">
 
@@ -92,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="需求类型"
+                android:text="主题"
                 android:textSize="16sp" />
 
             <View
@@ -100,33 +99,15 @@
                 android:layout_height="20dp"
                 android:background="@color/back_gray" />
 
-            <TextView
-                android:id="@+id/tv_type"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="网站制作"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/tv_typeTwo"
-                android:layout_marginLeft="25dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp" />
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/et_theme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
-                android:gravity="right">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_back_right" />
-
-            </LinearLayout>
+                android:hint="真人直播聊天APP"
+                android:background="@null"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -142,7 +123,39 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="预估价格"
+                android:text="类型"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="20dp"
+                android:background="@color/back_gray" />
+
+            <EditText
+                android:id="@+id/et_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:background="@null"
+                android:hint="娱乐"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="价格"
                 android:textSize="16sp" />
 
             <View
@@ -152,25 +165,13 @@
 
             <EditText
                 android:id="@+id/et_price"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
                 android:text="0.00"
                 android:background="@null"
                 android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:gravity="right">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_back_right" />
-
-            </LinearLayout>
 
         </LinearLayout>
 
@@ -186,7 +187,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="工作周期"
+                android:text="系统"
                 android:textSize="16sp" />
 
             <View
@@ -194,46 +195,21 @@
                 android:layout_height="20dp"
                 android:background="@color/back_gray" />
 
-            <TextView
-                android:id="@+id/tv_begin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="0000-00-00"
-                android:textSize="16sp" />
-
-            <View
-                android:layout_marginLeft="10dp"
-                android:layout_width="15dp"
-                android:layout_height="2dp"
-                android:background="@color/text_gray"/>
-
-            <TextView
-                android:id="@+id/tv_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="0000-00-00"
-                android:textSize="16sp" />
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/et_system"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
-                android:gravity="right">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/icon_back_right" />
-
-            </LinearLayout>
+                android:hint="Android/iOS"
+                android:background="@null"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_submit"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
@@ -245,4 +221,4 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

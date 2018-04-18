@@ -9,11 +9,12 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
+    <!-- android:label="@string/app_name" -->
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_lanucher"
+        android:label="定制软件"
+        android:roundIcon="@mipmap/ic_lanucher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.MainActivity" />
@@ -30,7 +31,7 @@
         <activity android:name=".ui.activity.RegisterActivity" />
         <activity android:name=".ui.activity.SetActivity" />
         <activity android:name=".ui.activity.PersonalActivity" />
-        <activity android:name=".ui.activity.AddRequirementsActivity" />
+        <activity android:name=".ui.activity.RequirementDetailActivity" />
         <activity android:name=".ui.activity.EnlargePicActivity" />
         <activity
             android:name="me.iwf.photopicker.PhotoPickerActivity"
@@ -52,7 +53,10 @@
         <activity
             android:name=".ui.activity.MyShopActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.activity.CreateShopActivity"></activity>
+        <activity android:name=".ui.activity.CreateShopActivity" />
+        <activity android:name=".ui.activity.MyFollowActivity" />
+        <activity android:name=".ui.activity.AddRequirementActivity" />
+        <activity android:name=".ui.activity.AddExampleActivity"></activity>
     </application>
 
 </manifest>

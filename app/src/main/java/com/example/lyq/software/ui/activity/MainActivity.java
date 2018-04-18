@@ -9,22 +9,22 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TabHost;
-import android.widget.TabWidget;
 import android.widget.TextView;
 import com.example.lyq.software.R;
 import com.example.lyq.software.ui.fragment.AddRequirementsFragment;
-import com.example.lyq.software.ui.fragment.ClassificationFragment;
 import com.example.lyq.software.ui.fragment.HomeFragment;
 import com.example.lyq.software.ui.fragment.MessageFragment;
 import com.example.lyq.software.ui.fragment.MyFragment;
+import com.example.lyq.software.ui.fragment.NearByFragment;
+import com.example.lyq.software.ui.fragment.ShopFragment;
 
 public class MainActivity extends FragmentActivity {
 
-    private Class mFragmentArray[] = {HomeFragment.class,
+    private Class mFragmentArray[] = {HomeFragment.class, NearByFragment.class,
             AddRequirementsFragment.class, MessageFragment.class, MyFragment.class};
-    private  int mImageViewArray[] = {R.drawable.tab_menu_home,
+    private  int mImageViewArray[] = {R.drawable.tab_menu_home,R.drawable.tab_menu_nearby,
             R.drawable.tab_menu_add,R.drawable.tab_menu_message,R.drawable.tab_menu_my};
-    private String mTextViewArray[] = {"首页","添加","消息","我的"};
+    private String mTextViewArray[] = {"首页","附近","添加","消息","我的"};
     private LayoutInflater layoutInflater;
     private FragmentTabHost mTabHost;
     private FrameLayout frameLayout;
@@ -66,6 +66,7 @@ public class MainActivity extends FragmentActivity {
                 mTabHost.setVisibility(View.VISIBLE);
             }
             TextView tv = (TextView) mTabHost.getTabWidget().getChildAt(i).findViewById(R.id.textview);
+            tv.setTextSize(10);
             if (mTabHost.getCurrentTab() == i){
                 tv.setTextColor(this.getResources().getColor(R.color.back_orange_1));
             }else {

@@ -17,6 +17,7 @@ import com.example.lyq.software.ui.activity.CreateShopActivity;
 import com.example.lyq.software.ui.activity.LoginActivity;
 import com.example.lyq.software.ui.activity.MyApplyActivity;
 import com.example.lyq.software.ui.activity.MyCollectionActivity;
+import com.example.lyq.software.ui.activity.MyFollowActivity;
 import com.example.lyq.software.ui.activity.MyShopActivity;
 import com.example.lyq.software.ui.activity.MyUploadActivity;
 import com.example.lyq.software.ui.activity.PersonalActivity;
@@ -161,8 +162,8 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                 startActivity(collectionIntent);
                 break;
             case R.id.ll_attention:
-                Intent attentionIntent = new Intent(getContext(), MyApplyActivity.class);
-                attentionIntent.putExtra("type","我的订单");
+                Intent attentionIntent = new Intent(getContext(), MyFollowActivity.class);
+                attentionIntent.putExtra("type","我的关注");
                 startActivity(attentionIntent);
                 break;
         }

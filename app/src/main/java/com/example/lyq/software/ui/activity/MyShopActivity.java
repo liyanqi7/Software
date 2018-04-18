@@ -4,15 +4,33 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.lyq.software.R;
 import com.example.lyq.software.lib.Constants;
+import com.example.lyq.software.ui.bean.Login;
+import com.example.lyq.software.ui.bean.Shop;
+import com.example.lyq.software.ui.bean.Volume;
+import com.example.lyq.software.ui.custom.AddPopWindow;
 import com.example.lyq.software.ui.fragment.MyApplyFragment;
 import com.example.lyq.software.ui.fragment.ShopHomeFragment;
+import com.example.lyq.software.utils.HttpUtil;
 import com.example.lyq.software.utils.SpUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MyShopActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,14 +49,96 @@ public class MyShopActivity extends AppCompatActivity implements View.OnClickLis
     private View vDeal;
     private View vData;
     private ShopHomeFragment mShopHomeFragment;
+    private TextView tvCompany;
+    private TextView tvProvince;
+    private TextView tvCity;
+    private TextView tvVolume;
+    private Shop shop;
+    private Login user;
+    private Volume volume;
+    private ImageView ivPop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_shop);
         initView();
+        initData();
         initEvents();
         selectTab(HOMEPAGE);//初始化fragment
+    }
+
+    private void initData() {
+        /**
+         * 要从服务端获取完数据后，更新UI(主线程不能调用子线程数据???)
+         */
+        myShopMessage();
+    }
+
+    private void myShopMessage() {
+        String url = Constants.BASE_URL + "/applyShopServlet";
+        String userName = SpUtils.getTokenId(this,Constants.TOKENID);
+        RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
+                .add("userName",userName)
+                .build();
+        HttpUtil.post(url, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                try {
+                    parseSHOPWithGSON(responseData);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void parseSHOPWithGSON(String responseData) throws JSONException {
+        JSONObject object = new JSONObject(responseData);
+        JSONArray shopArray = object.getJSONArray("shopList");
+        JSONArray userArray = object.getJSONArray("userList");
+        JSONArray volumeArray = object.getJSONArray("countList");
+        Log.e("TAG", "parseJSONWithGSON: " + shopArray);
+        Log.e("TAG", "parseJSONWithGSON: " + userArray);
+        Log.e("TAG", "parseJSONWithGSON: " + volumeArray);
+        for (int i = 0; i < shopArray.length(); i++) {
+            shop = new Shop();
+            JSONObject obj = shopArray.getJSONObject(i);
+            shop.setUserName(obj.getString("userName"));
+            shop.setCompany(obj.getString("company"));
+            shop.setProvince(obj.getString("province"));
+            shop.setCity(obj.getString("city"));
+            shop.setNature(obj.getString("nature"));
+        }
+//        Log.e("TAG", "parseSHOPWithGSON: " + shop.getCompany() );
+        for (int i = 0; i < userArray.length(); i++) {
+            user = new Login();
+            JSONObject obj = userArray.getJSONObject(i);
+            user.setHead(obj.getString("head"));
+        }
+        for (int i = 0; i < volumeArray.length(); i++) {
+            volume = new Volume();
+            JSONObject obj = volumeArray.getJSONObject(i);
+            volume.setSum(obj.getString("volume"));
+        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Glide.with(getBaseContext())
+                        .load(Constants.BASE_URL + SpUtils.getHead(getBaseContext(),Constants.HEAD))
+                        .into(ivImage);
+                tvCompany.setText(shop.getCompany());
+                tvProvince.setText(shop.getProvince());
+                tvCity.setText(shop.getCity());
+                tvVolume.setText(volume.getSum() + "笔");
+            }
+        });
     }
 
     private void initEvents() {
@@ -46,13 +146,16 @@ public class MyShopActivity extends AppCompatActivity implements View.OnClickLis
         tvOrder.setOnClickListener(this);
         tvDeal.setOnClickListener(this);
         tvData.setOnClickListener(this);
+        ivPop.setOnClickListener(this);
     }
 
     private void initView() {
         ivImage = (ImageView) findViewById(R.id.iv_image);
-        Glide.with(this)
-                .load(Constants.BASE_URL + SpUtils.getHead(getBaseContext(),Constants.HEAD))
-                .into(ivImage);
+        tvCompany = (TextView) findViewById(R.id.tv_company);
+        tvProvince = (TextView) findViewById(R.id.tv_province);
+        tvCity = (TextView) findViewById(R.id.tv_city);
+        tvVolume = (TextView) findViewById(R.id.tv_volume);
+        ivPop = (ImageView) findViewById(R.id.iv_pop);
         //四个指示器控件
         tvHomePage = (TextView) findViewById(R.id.tv_homePage);
         tvOrder = (TextView) findViewById(R.id.tv_order);
@@ -60,8 +163,8 @@ public class MyShopActivity extends AppCompatActivity implements View.OnClickLis
         tvData = (TextView) findViewById(R.id.tv_data);
         vHomePage = findViewById(R.id.v_homePage);
         vOrder = findViewById(R.id.v_order);
-        vDeal = findViewById(R.id.v_deal);
         vData = findViewById(R.id.v_data);
+        vDeal = findViewById(R.id.v_deal);
     }
 
     @Override
@@ -79,6 +182,10 @@ public class MyShopActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.tv_data:
                 selectTab(DATA);
+                break;
+            case R.id.iv_pop:
+                AddPopWindow addPopWindow = new AddPopWindow(this);
+                addPopWindow.showPopupWindow(ivPop);
                 break;
         }
     }

@@ -44,6 +44,12 @@ import okhttp3.Response;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>{
 
     private List<Order> mOrderList;
+    private List<Shop> mShopList;
+    private List<Login> mUserList;
+    private List<Volume> mVolumeList;
+//    private Shop mShop;
+//    private Login mUser;
+//    private Volume mVolume;
     private Activity mActivity;
     private Intent intent;
 
@@ -65,9 +71,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }
     }
 
-    public MessageAdapter(List<Order> orderList, FragmentActivity activity) {
+    public MessageAdapter(List<Order> orderList, List<Shop> shop, List<Login> user, List<Volume> volume, FragmentActivity activity) {
         mOrderList = orderList;
+        mShopList = shop;
+        mUserList = user;
+        mVolumeList = volume;
         mActivity = activity;
+//        mShop = shop;
+//        mUser = user;
+//        mVolume = volume;
+//        Log.e("TAG", "MessageAdapter: "+orderList.size() );
+//        Log.e("TAG", "MessageAdapter: "+mShop );
+//        Log.e("TAG", "MessageAdapter: "+mOrderList );
     }
 
     @Override
@@ -80,6 +95,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Order order = mOrderList.get(position);
+        final Shop shop = mShopList.get(position);
+        final Login user = mUserList.get(position);
+        final Volume volume = mVolumeList.get(position);
         Log.e("debug", "onBindViewHolder: " + mOrderList.size());
         Glide.with(mActivity)
                 .load(Constants.BASE_URL + order.getHead())
@@ -100,13 +118,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     holder.icCircle.setVisibility(View.INVISIBLE);
                     changeBrowse(releaseId,applyName);//改变消息的浏览状态
                 }
-                getApplyShop(applyName);
+//                getApplyShop(applyName);
                 intent = new Intent();
                 intent.putExtra("applyName",order.getApplyName());
                 intent.putExtra("releaseId",order.getReleaseId());
-//                intent.putExtra("shopData",shop);
-//                intent.putExtra("userData",user);
-//                intent.putExtra("volumeData",volume);
+                intent.putExtra("shopData",shop);
+                intent.putExtra("userData",user);
+                intent.putExtra("volumeData",volume);
+//                Log.e("TAG", "onClick: "+mUser.getHead());
                 intent.putExtra("stateData","Process");
                 intent.setClass(mActivity,OrderProcessActivity.class);
                 mActivity.startActivity(intent);
@@ -114,63 +133,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         });
     }
 
-    private void getApplyShop(String applyName) {
-        String url = Constants.BASE_URL + "/applyShopServlet";
-        RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
-                .add("userName",applyName)
-                .build();
-        HttpUtil.post(url, body, new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String responseData = response.body().string();
-                try {
-                    parseJSONWithGSON(responseData);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-
-    private void parseJSONWithGSON(String responseData) throws JSONException {
-        JSONObject object = new JSONObject(responseData);
-        JSONArray shopArray = object.getJSONArray("shopList");
-        JSONArray userArray = object.getJSONArray("userList");
-        JSONArray volumeArray = object.getJSONArray("countList");
-        Shop shop = null;
-        Login user = null;
-        Volume volume = null;
-        Log.d("TAG", "parseJSONWithGSON: " + shopArray);
-        Log.d("TAG", "parseJSONWithGSON: " + userArray);
-        Log.e("TAG", "parseJSONWithGSON: " + volumeArray);
-        for (int i = 0; i < shopArray.length(); i++) {
-            shop = new Shop();
-            JSONObject obj = shopArray.getJSONObject(i);
-            shop.setUserName(obj.getString("userName"));
-            shop.setCompany(obj.getString("company"));
-            shop.setProvince(obj.getString("province"));
-            shop.setCity(obj.getString("city"));
-            shop.setNature(obj.getString("nature"));
-        }
-        for (int i = 0; i < userArray.length(); i++) {
-            user = new Login();
-            JSONObject obj = userArray.getJSONObject(i);
-            user.setHead(obj.getString("head"));
-        }
-        for (int i = 0; i < volumeArray.length(); i++) {
-            volume = new Volume();
-            JSONObject obj = volumeArray.getJSONObject(i);
-            volume.setSum(obj.getString("volume"));
-        }
-        intent.putExtra("shopData",shop);
-        intent.putExtra("userData",user);
-        intent.putExtra("volumeData",volume);
-    }
+//    private void getApplyShop(String applyName) {
+//
+//    }
+//
+//    private void parseJSONWithGSON(String responseData) throws JSONException {
+//
+//    }
 
     private void changeBrowse(String releaseId , String applyName) {
         String url = Constants.BASE_URL + "/changeBrowseServlet";
