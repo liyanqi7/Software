@@ -207,11 +207,6 @@ public class RequirementDetailActivity extends BaseActivity implements View.OnCl
         @Override
         protected void onPostExecute(String result) {
             if(!"error".equals(result)) {
-//                SpUtils.putHead(getBaseContext(),Constants.HEAD,result);
-//                Log.i(TAG, "图片地址 " + BASE_URL + result);
-//                Glide.with(getBaseContext())
-//                        .load(BASE_URL + result)
-//                        .into(ivHead);
             }
         }
     }

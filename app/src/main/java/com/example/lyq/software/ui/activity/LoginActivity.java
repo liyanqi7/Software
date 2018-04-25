@@ -86,7 +86,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         HttpUtil.post(url, body, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("okhttp", "onFailure: ",e);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(LoginActivity.this, "连接失败！", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
@@ -96,6 +101,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
         });
     }
+
     private void parseJSONWithGSON(String responseData) {
         Gson gson = new Gson();
         final Login ln = gson.fromJson(responseData, Login.class);
@@ -104,7 +110,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 @Override
                 public void run() {
                     LoginActivity.this.finish();
-                    Log.e("1", "run: " + SpUtils.getNick(getBaseContext(),Constants.NICK));
                     SpUtils.putTokenId(getBaseContext(),Constants.TOKENID,ln.getTokenId().toString());
                     SpUtils.putNick(getBaseContext(),Constants.NICK,ln.getNick().toString());
                     SpUtils.putHead(getBaseContext(),Constants.HEAD,ln.getHead().toString());
@@ -116,11 +121,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(LoginActivity.this, "登录失败!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "用户名或密码错误，请重新登录!", Toast.LENGTH_SHORT).show();
                 }
             });
         }
-}
+    }
 
     private void changeHead(Login ln) {
         Log.e("", "changeHead: " + ln.getTokenId().toString() );

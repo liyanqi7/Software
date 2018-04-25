@@ -2,6 +2,9 @@ package com.example.lyq.software.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +20,10 @@ import com.example.lyq.software.ui.bean.Login;
 import com.example.lyq.software.ui.bean.Result;
 import com.example.lyq.software.ui.bean.Shop;
 import com.example.lyq.software.ui.bean.Volume;
+import com.example.lyq.software.ui.fragment.ExampleFragment;
+import com.example.lyq.software.ui.fragment.MyApplyFragment;
+import com.example.lyq.software.ui.fragment.ShopHomeFragment;
+import com.example.lyq.software.ui.fragment.ShopInformationFragment;
 import com.example.lyq.software.utils.HttpUtil;
 import com.example.lyq.software.utils.SpUtils;
 import com.google.gson.Gson;
@@ -29,7 +36,7 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class OrderProcessActivity extends BaseActivity implements View.OnClickListener {
+public class OrderProcessActivity extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout llDelete;
     private Intent intent;
@@ -51,15 +58,32 @@ public class OrderProcessActivity extends BaseActivity implements View.OnClickLi
     private TextView tvFollow;
     private String followState;
     private LinearLayout llFollow;
+    private ImageView ivPop;
+    int HOMEPAGE = 0;
+    private int ORDER = 1;
+    private int DEAL = 2;
+    private int DATA = 3;
+    private ShopHomeFragment mShopHomeFragment;
+    private MyApplyFragment mMyApplyFragment;
+    private ExampleFragment mExampleFragment;
+    private ShopInformationFragment mShopInformationFragment;
+    private TextView tvHomePage;
+    private TextView tvOrder;
+    private TextView tvDeal;
+    private TextView tvData;
+    private View vHomePage;
+    private View vOrder;
+    private View vData;
+    private View vDeal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_process);
         userName = SpUtils.getTokenId(getBaseContext(), Constants.TOKENID);
-        Log.e("user", "onCreate: " + userName);
         initView();
         initData();
+        selectTab(HOMEPAGE);//初始化fragment
         if (!(userName.isEmpty())){ //判断是否为空，不能用(userName == null)
             doJudgeFollow();//判断订单是否被收藏,初始化collectionState的值
         }
@@ -100,14 +124,123 @@ public class OrderProcessActivity extends BaseActivity implements View.OnClickLi
         ivFollow = (ImageView) findViewById(R.id.iv_follow);
         tvFollow = (TextView) findViewById(R.id.tv_follow);
         llHire = (LinearLayout) findViewById(R.id.ll_hire);
+        ivPop = (ImageView) findViewById(R.id.iv_pop);
+
+        tvHomePage = (TextView) findViewById(R.id.tv_homePage);
+//        tvOrder = (TextView) findViewById(R.id.tv_order);
+        tvDeal = (TextView) findViewById(R.id.tv_deal);
+        tvData = (TextView) findViewById(R.id.tv_data);
+        vHomePage = findViewById(R.id.v_homePage);
+        vOrder = findViewById(R.id.v_order);
+        vData = findViewById(R.id.v_data);
+        vDeal = findViewById(R.id.v_deal);
+        ivPop.setVisibility(View.GONE);
+        tvHomePage.setOnClickListener(this);
+//        tvOrder.setOnClickListener(this);
+        tvDeal.setOnClickListener(this);
+        tvData.setOnClickListener(this);
         llDelete.setOnClickListener(this);
         llAgreen.setOnClickListener(this);
         llFollow.setOnClickListener(this);
     }
 
+    private void selectTab(int i) {
+        //获取FragmentManager对象
+        FragmentManager manager = getSupportFragmentManager();
+        //获取FragmentTransaction对象
+        FragmentTransaction transaction = manager.beginTransaction();
+        //先隐藏所有的fragment
+        hideFragments(transaction);
+        switch (i) {
+            case 0:
+                tvHomePage.setTextColor(this.getResources().getColor(R.color.text_orange));
+                vHomePage.setBackgroundColor(this.getResources().getColor(R.color.text_orange));
+                //如果对应的Fragment没有实例化，则进行实例化，并显示出来
+                if (mShopHomeFragment == null) {
+                    mShopHomeFragment = new ShopHomeFragment();
+                    transaction.add(R.id.content, mShopHomeFragment);
+                } else {
+                    //如果对应的Fragment已经实例化，则直接显示出来
+                    transaction.show(mShopHomeFragment);
+                }
+                break;
+            case 1:
+//                tvOrder.setTextColor(this.getResources().getColor(R.color.text_orange));
+//                vOrder.setBackgroundColor(this.getResources().getColor(R.color.text_orange));
+//                if (mMyApplyFragment == null) {
+//                    mMyApplyFragment = new MyApplyFragment();
+//                    transaction.add(R.id.content, mMyApplyFragment);
+//                } else {
+//                    transaction.show(mMyApplyFragment);
+//                }
+                break;
+            case 2:
+                tvDeal.setTextColor(this.getResources().getColor(R.color.text_orange));
+                vDeal.setBackgroundColor(this.getResources().getColor(R.color.text_orange));
+                if (mExampleFragment == null) {
+                    mExampleFragment = new ExampleFragment();
+                    transaction.add(R.id.content, mExampleFragment);
+                } else {
+                    transaction.show(mExampleFragment);
+                }
+                break;
+            case 3:
+                tvData.setTextColor(this.getResources().getColor(R.color.text_orange));
+                vData.setBackgroundColor(this.getResources().getColor(R.color.text_orange));
+                if (mShopInformationFragment == null) {
+                    mShopInformationFragment = new ShopInformationFragment();
+                    transaction.add(R.id.content, mShopInformationFragment);
+                } else {
+                    transaction.show(mShopInformationFragment);
+                }
+                break;
+        }
+        //不要忘记提交事务
+        transaction.commit();
+    }
+
+    private void hideFragments(FragmentTransaction transaction) {
+        if (mShopHomeFragment!= null) {
+            transaction.hide(mShopHomeFragment);
+        }
+//        if (mMyApplyFragment != null) {
+//            transaction.hide(mMyApplyFragment);
+//        }
+        if (mExampleFragment != null) {
+            transaction.hide(mExampleFragment);
+        }
+        if (mShopInformationFragment != null) {
+            transaction.hide(mShopInformationFragment);
+        }
+    }
+
+    private void resetTab() {
+        tvHomePage.setTextColor(this.getResources().getColor(R.color.text_gray));
+//        tvOrder.setTextColor(this.getResources().getColor(R.color.text_gray));
+        tvDeal.setTextColor(this.getResources().getColor(R.color.text_gray));
+        tvData.setTextColor(this.getResources().getColor(R.color.text_gray));
+        vHomePage.setBackgroundColor(this.getResources().getColor(R.color.back_gray));
+//        vOrder.setBackgroundColor(this.getResources().getColor(R.color.back_gray));
+        vDeal.setBackgroundColor(this.getResources().getColor(R.color.back_gray));
+        vData.setBackgroundColor(this.getResources().getColor(R.color.back_gray));
+    }
+
     @Override
     public void onClick(View v) {
+        resetTab();//初始化字体颜色
         switch (v.getId()){
+            case R.id.tv_homePage:
+                selectTab(HOMEPAGE);
+                break;
+//            case R.id.tv_order:
+//                selectTab(ORDER);
+//                break;
+            case R.id.tv_deal:
+                selectTab(DEAL);
+                break;
+            case R.id.tv_data:
+                selectTab(DATA);
+                break;
             case R.id.ll_delete:
                 String state = "未通过";
                 doChangeState(state);

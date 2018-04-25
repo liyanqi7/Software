@@ -180,13 +180,13 @@
 
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="16sp"
-                    android:textColor="@color/text_black"
-                    android:layout_marginTop="5dp"
-                    android:text="产品描述:"/>
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="16sp"-->
+                    <!--android:textColor="@color/text_black"-->
+                    <!--android:layout_marginTop="5dp"-->
+                    <!--android:text="产品描述:"/>-->
 
                 <TextView
                     android:id="@+id/tv_descript"
@@ -364,6 +364,32 @@
                     android:text="申请任务"
                     android:textColor="@color/back_white_2"
                     android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/back_gray"/>
+
+            <LinearLayout
+                android:id="@+id/ll_create"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/back_gray"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="无接单权限" />
 
             </LinearLayout>
 

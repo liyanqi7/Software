@@ -96,29 +96,57 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
+            android:gravity="center"
             android:layout_height="50dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:textColor="@color/text_orange"
-                android:text="在线咨询"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/icon_enter_call"/>
+
+                <TextView
+                    android:id="@+id/tv_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/text_orange"
+                    android:layout_marginLeft="3dp"
+                    android:text="在线咨询"
+                    android:gravity="center"/>
+
+            </LinearLayout>
 
             <View
                 android:layout_width="0.5dp"
                 android:layout_height="match_parent"
                 android:background="@color/back_gray_2"/>
 
-            <TextView
-                android:id="@+id/tv_enterShop"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="match_parent"
-                android:textColor="@color/text_orange"
-                android:text="进入店铺"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/icon_enter_shop"/>
+
+                <TextView
+                    android:id="@+id/tv_enterShop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/text_orange"
+                    android:layout_marginLeft="3dp"
+                    android:text="进入店铺"
+                    android:gravity="center"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

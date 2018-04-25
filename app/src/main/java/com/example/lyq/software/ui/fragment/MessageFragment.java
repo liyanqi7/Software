@@ -42,7 +42,6 @@ public class MessageFragment extends Fragment {
     private List<Shop> shopList = new ArrayList<Shop>();
     private List<Login> userList = new ArrayList<Login>();
     private List<Volume> volumeList = new ArrayList<Volume>();
-//    private String applyName;
     private MessageAdapter adapter;
 
     @Override
@@ -56,15 +55,8 @@ public class MessageFragment extends Fragment {
         adapter = new MessageAdapter(orderList,shopList,userList,volumeList,this.getActivity());
         recyclerView.setAdapter(adapter);
         getApplyMessage();
-//        getShopMessage();
         return view;
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//
-//    }
 
     private void getApplyMessage() {
         String url = Constants.BASE_URL + "/applyTaskServlet";
@@ -118,9 +110,9 @@ public class MessageFragment extends Fragment {
 
     private void getShopMessage(String applyName) {
         String url = Constants.BASE_URL + "/applyShopServlet";
-            RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
-                    .add("userName",applyName)
-                    .build();
+        RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
+                .add("userName",applyName)
+                .build();
         HttpUtil.post(url, body, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {

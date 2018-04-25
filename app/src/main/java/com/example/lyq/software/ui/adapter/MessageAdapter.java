@@ -80,9 +80,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 //        mShop = shop;
 //        mUser = user;
 //        mVolume = volume;
-//        Log.e("TAG", "MessageAdapter: "+orderList.size() );
+        Log.e("TAG", "MessageAdapter: "+orderList.size() );
 //        Log.e("TAG", "MessageAdapter: "+mShop );
-//        Log.e("TAG", "MessageAdapter: "+mOrderList );
+        Log.e("TAG", "MessageAdapter: "+mOrderList );
     }
 
     @Override
@@ -132,14 +132,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             }
         });
     }
-
-//    private void getApplyShop(String applyName) {
-//
-//    }
-//
-//    private void parseJSONWithGSON(String responseData) throws JSONException {
-//
-//    }
 
     private void changeBrowse(String releaseId , String applyName) {
         String url = Constants.BASE_URL + "/changeBrowseServlet";

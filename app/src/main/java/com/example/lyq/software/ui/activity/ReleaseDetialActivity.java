@@ -66,6 +66,7 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
     private TextView tvConfirm;
     private TextView tvCancel;
     private LinearLayout llUpload;
+    private LinearLayout llCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,8 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
         userName = SpUtils.getTokenId(getBaseContext(), Constants.TOKENID);
         Log.e("user", "onCreate: " + userName);
         if (!(userName.isEmpty())){ //判断是否为空，不能用(userName == null)
-            doJudgeApply();//判断订单是被否申请
+            doJudgeShop();//判断是否有店铺，决定用户的申请权限
+//            doJudgeApply();
             doJudgeCollection();//判断订单是否被收藏,初始化collectionState的值
         }
         initView();
@@ -112,6 +114,7 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
         tvDate = (TextView) findViewById(R.id.tv_date);
         tvBegin = (TextView) findViewById(R.id.tv_begin);
         tvEnd = (TextView) findViewById(R.id.tv_end);
+        llCreate = (LinearLayout) findViewById(R.id.ll_create);
         llAply = (LinearLayout) findViewById(R.id.ll_apply);
         tvApply = (TextView) findViewById(R.id.tv_apply);
         llAply.setOnClickListener(this);
@@ -287,6 +290,48 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
                 }
             }
         });
+    }
+
+    /**
+     * 判断用户是否是可接单用户
+     */
+    private void doJudgeShop() {
+        String url = Constants.BASE_URL + "/judgeShopServlet";
+        String userName = SpUtils.getTokenId(getBaseContext(),Constants.TOKENID);
+        FormBody body = new FormBody.Builder()
+                .add("userName",userName)
+                .build();
+        HttpUtil.post(url, body, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();//注意:response.body().string();不是response.body().toString(),sting()通过使用指定的charset解码指定的byte数组，构造一个新的String
+                Gson gson = new Gson();
+                Result rs = gson.fromJson(responseData, Result.class);
+                if (rs.getResult().toString().equals("true")){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            llAply.setVisibility(View.VISIBLE);
+                            llCreate.setVisibility(View.GONE);
+                            doJudgeApply();//判断订单是被否申请
+                        }
+                    });
+                }else {
+                    ReleaseDetialActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            llAply.setVisibility(View.GONE);
+                            llCreate.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
+            }
+        });;
     }
 
     /**

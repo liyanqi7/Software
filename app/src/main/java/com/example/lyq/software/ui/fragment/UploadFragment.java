@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import com.example.lyq.software.R;
 import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.activity.WebActivity;
@@ -61,7 +63,12 @@ public class UploadFragment extends Fragment{
         HttpUtil.post(url, body, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "连接失败！", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
@@ -124,11 +131,11 @@ public class UploadFragment extends Fragment{
             release.setEndTime(obj.getString("endTime"));
             releaseList.add(release);
         }
-        getActivity().runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {  //启动主线程进行UI操作
             @Override
             public void run() {
                 adapter.notifyDataSetChanged();
             }
-        });//启动主线程进行UI操作
+        });
     }
 }

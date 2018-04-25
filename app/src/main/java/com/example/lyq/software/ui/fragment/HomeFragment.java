@@ -101,18 +101,19 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         search02 = (LinearLayout)view.findViewById(R.id.search02);
         search_edit = (LinearLayout) view.findViewById(R.id.search_edit);
         rlayout = (LinearLayout)view.findViewById(R.id.rlayout);
-        scrollView.setOnScrollListener(this);
+        scrollView.setOnScrollListener(this);//接口回调
         //实现在fragment中获取searchLayout的顶部位置
         rlayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
                 rlayout.getViewTreeObserver().removeOnPreDrawListener(this);
-                searchLayoutTop = rlayout.getBottom();
+                searchLayoutTop = rlayout.getBottom();//获取searchLayout的顶部位置
                 return false;
             }
         });
     }
 
+    //监听滚动Y值变化，通过addView和removeView实现悬停效果
     @Override
     public void onScroll(int scrollY) {
         if(scrollY >= searchLayoutTop){

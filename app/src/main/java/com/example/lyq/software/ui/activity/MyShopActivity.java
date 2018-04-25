@@ -15,8 +15,10 @@ import com.example.lyq.software.ui.bean.Login;
 import com.example.lyq.software.ui.bean.Shop;
 import com.example.lyq.software.ui.bean.Volume;
 import com.example.lyq.software.ui.custom.AddPopWindow;
+import com.example.lyq.software.ui.fragment.ExampleFragment;
 import com.example.lyq.software.ui.fragment.MyApplyFragment;
 import com.example.lyq.software.ui.fragment.ShopHomeFragment;
+import com.example.lyq.software.ui.fragment.ShopInformationFragment;
 import com.example.lyq.software.utils.HttpUtil;
 import com.example.lyq.software.utils.SpUtils;
 
@@ -38,7 +40,6 @@ public class MyShopActivity extends AppCompatActivity implements View.OnClickLis
     private TextView tvOrder;
     private TextView tvDeal;
     private TextView tvData;
-    private MyApplyFragment mHomePageFragment;
     private ImageView ivImage;
     int HOMEPAGE = 0;
     private int ORDER = 1;
@@ -48,7 +49,6 @@ public class MyShopActivity extends AppCompatActivity implements View.OnClickLis
     private View vOrder;
     private View vDeal;
     private View vData;
-    private ShopHomeFragment mShopHomeFragment;
     private TextView tvCompany;
     private TextView tvProvince;
     private TextView tvCity;
@@ -57,6 +57,10 @@ public class MyShopActivity extends AppCompatActivity implements View.OnClickLis
     private Login user;
     private Volume volume;
     private ImageView ivPop;
+    private ShopHomeFragment mShopHomeFragment;
+    private MyApplyFragment mMyApplyFragment;
+    private ExampleFragment mExampleFragment;
+    private ShopInformationFragment mShopInformationFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,51 +217,50 @@ public class MyShopActivity extends AppCompatActivity implements View.OnClickLis
             case 1:
                 tvOrder.setTextColor(this.getResources().getColor(R.color.text_orange));
                 vOrder.setBackgroundColor(this.getResources().getColor(R.color.text_orange));
-                if (mHomePageFragment == null) {
-                    mHomePageFragment = new MyApplyFragment();
-                    transaction.add(R.id.content, mHomePageFragment);
+                if (mMyApplyFragment == null) {
+                    mMyApplyFragment = new MyApplyFragment();
+                    transaction.add(R.id.content, mMyApplyFragment);
                 } else {
-                    transaction.show(mHomePageFragment);
+                    transaction.show(mMyApplyFragment);
                 }
                 break;
             case 2:
                 tvDeal.setTextColor(this.getResources().getColor(R.color.text_orange));
                 vDeal.setBackgroundColor(this.getResources().getColor(R.color.text_orange));
-                if (mHomePageFragment == null) {
-                    mHomePageFragment = new MyApplyFragment();
-                    transaction.add(R.id.content, mHomePageFragment);
+                if (mExampleFragment == null) {
+                    mExampleFragment = new ExampleFragment();
+                    transaction.add(R.id.content, mExampleFragment);
                 } else {
-                    transaction.show(mHomePageFragment);
+                    transaction.show(mExampleFragment);
                 }
                 break;
             case 3:
                 tvData.setTextColor(this.getResources().getColor(R.color.text_orange));
                 vData.setBackgroundColor(this.getResources().getColor(R.color.text_orange));
-                if (mHomePageFragment == null) {
-                    mHomePageFragment = new MyApplyFragment();
-                    transaction.add(R.id.content, mHomePageFragment);
+                if (mShopInformationFragment == null) {
+                    mShopInformationFragment = new ShopInformationFragment();
+                    transaction.add(R.id.content, mShopInformationFragment);
                 } else {
-                    transaction.show(mHomePageFragment);
+                    transaction.show(mShopInformationFragment);
                 }
                 break;
         }
         //不要忘记提交事务
         transaction.commit();
-        
     }
 
     private void hideFragments(FragmentTransaction transaction) {
         if (mShopHomeFragment!= null) {
             transaction.hide(mShopHomeFragment);
         }
-        if (mHomePageFragment != null) {
-            transaction.hide(mHomePageFragment);
+        if (mMyApplyFragment != null) {
+            transaction.hide(mMyApplyFragment);
         }
-        if (mHomePageFragment != null) {
-            transaction.hide(mHomePageFragment);
+        if (mExampleFragment != null) {
+            transaction.hide(mExampleFragment);
         }
-        if (mHomePageFragment != null) {
-            transaction.hide(mHomePageFragment);
+        if (mShopInformationFragment != null) {
+            transaction.hide(mShopInformationFragment);
         }
     }
 

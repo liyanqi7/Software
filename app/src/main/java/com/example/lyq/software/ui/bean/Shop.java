@@ -10,9 +10,13 @@ public class Shop implements Serializable {
 
     String userName;
     String company;
+    String descript;
     String province;
     String city;
+    String detail;
     String nature;
+    String image1;
+    String image2;
 
     public Shop(){
         super();
@@ -42,6 +46,14 @@ public class Shop implements Serializable {
         this.company = company;
     }
 
+    public void setDescript(String descript) {
+        this.descript = descript;
+    }
+
+    public String getDescript() {
+        return descript;
+    }
+
     public String getProvince() {
         return province;
     }
@@ -58,11 +70,35 @@ public class Shop implements Serializable {
         this.city = city;
     }
 
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
     public String getNature() {
         return nature;
     }
 
     public void setNature(String nature) {
         this.nature = nature;
+    }
+
+    public void setImage1(String image1) {
+        this.image1 = image1;
+    }
+
+    public String getImage1() {
+        return image1;
+    }
+
+    public void setImage2(String image2) {
+        this.image2 = image2;
+    }
+
+    public String getImage2() {
+        return image2;
     }
 }

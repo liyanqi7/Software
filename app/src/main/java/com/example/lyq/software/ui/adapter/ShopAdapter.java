@@ -2,6 +2,7 @@ package com.example.lyq.software.ui.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,11 +42,12 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private final ImageView ivShop;
-        TextView tvCompany;
+        private final TextView tvCompany;
         private final TextView tvNature;
         private final TextView tvVolume;
         private final TextView tvAddress;
         private final TextView tvEnterShop;
+        private final TextView tvCall;
 
 
         public ViewHolder(View view) {
@@ -55,6 +57,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             tvNature = (TextView) view.findViewById(R.id.tv_nature);
             tvVolume = (TextView) view.findViewById(R.id.tv_volume);
             tvAddress = (TextView) view.findViewById(R.id.tv_address);
+            tvCall = (TextView) view.findViewById(R.id.tv_call);
             tvEnterShop = (TextView) view.findViewById(R.id.tv_enterShop);
         }
     }
@@ -78,6 +81,15 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         Glide.with(mActivity)
                 .load(Constants.BASE_URL + user.getHead())
                 .into(holder.ivShop);
+        holder.tvCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                Uri data = Uri.parse("tel:" + shop.getUserName());
+                intent.setData(data);
+                mActivity.startActivity(intent);
+            }
+        });
         holder.tvEnterShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,10 +102,9 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
                 mActivity.startActivity(intent);
             }
         });
-//        Log.e("TAG", "mReleaseList: "+ mShopList.size() );
-//        Log.e("TAG", "mImagesList: "+ mVolumeList.size() );
-//        Log.e("TAG", "mUserList: "+ mUserList.size());
     }
+
+
 
     @Override
     public int getItemCount() {

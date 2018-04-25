@@ -15,7 +15,7 @@ public class SuspendScrollView extends ScrollView {
     private OnScrollListener onScrollListener;
     private int lastScrollY;//主要是用在用户手指离开SuspendScrollView，SuspendScrollView还在继续滑动，我们用来保存Y的距离，然后做比较
     public SuspendScrollView(Context context) {
-        super(context);
+        super(context,null);
     }
     public SuspendScrollView(Context context, AttributeSet attrs) {
         super(context, attrs, 0);

@@ -41,21 +41,25 @@ public class NearByFragment extends Fragment {
     public List<Volume> volumeList = new ArrayList<Volume>();
     private ShopAdapter adapter;
     private TextView tvCount;
+    private RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_classification, container, false);
+        initView();
+        initData();
+        return view;
+    }
+
+    private void initView() {
         tvCount = (TextView) view.findViewById(R.id.tv_count);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        Log.e("TAG", "onResponse: " + "3333");
         //使用adapter先初始化界面，再传值进adapter
         adapter = new ShopAdapter(shopList,userList,volumeList,getActivity());
         recyclerView.setAdapter(adapter);
-        initData();
-        return view;
     }
 
     private void initData() {
@@ -96,6 +100,7 @@ public class NearByFragment extends Fragment {
         Shop shop = null;
         Login user = null;
         Volume volume = null;
+
         for (int i = 0; i < shopArray.length(); i++) {
             shop = new Shop();
             JSONObject obj = shopArray.getJSONObject(i);
@@ -121,7 +126,7 @@ public class NearByFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                tvCount.setText(shopList.size());
+                tvCount.setText(String.valueOf(shopList.size()));//注意：setText()中不能是int型数据
                 adapter.notifyDataSetChanged();
             }
         });
