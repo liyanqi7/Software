@@ -67,7 +67,12 @@ public class MessageFragment extends Fragment {
         HttpUtil.post(url, body, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getContext(), "服务未连接", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override

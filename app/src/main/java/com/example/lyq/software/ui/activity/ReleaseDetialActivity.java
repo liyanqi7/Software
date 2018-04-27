@@ -331,7 +331,7 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
                     });
                 }
             }
-        });;
+        });
     }
 
     /**

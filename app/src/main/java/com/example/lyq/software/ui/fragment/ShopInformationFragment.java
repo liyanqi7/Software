@@ -47,8 +47,11 @@ public class ShopInformationFragment extends Fragment {
     }
 
     private void initData() {
+        Bundle bundle = getArguments();
+        String userName = bundle.getString("shopName");
         String url = Constants.BASE_URL + "/applyShopServlet";
-        String userName = SpUtils.getTokenId(getContext(),Constants.TOKENID);
+        Log.e("TAG", "initData: "+userName);
+//        String userName = SpUtils.getTokenId(getContext(),Constants.TOKENID);
         RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
                 .add("userName",userName)
                 .build();

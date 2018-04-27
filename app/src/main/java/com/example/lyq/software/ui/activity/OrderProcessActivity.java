@@ -162,6 +162,7 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
                 } else {
                     //如果对应的Fragment已经实例化，则直接显示出来
                     transaction.show(mShopHomeFragment);
+//                    transaction.commit();
                 }
                 break;
             case 1:
@@ -182,6 +183,7 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
                     transaction.add(R.id.content, mExampleFragment);
                 } else {
                     transaction.show(mExampleFragment);
+//                    transaction.commit();
                 }
                 break;
             case 3:
@@ -192,6 +194,10 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
                     transaction.add(R.id.content, mShopInformationFragment);
                 } else {
                     transaction.show(mShopInformationFragment);
+//                    transaction.commit();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("shopName",shop.getUserName());
+//                    mShopInformationFragment.setArguments(bundle);
                 }
                 break;
         }
