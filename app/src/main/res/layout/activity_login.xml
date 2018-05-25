@@ -105,6 +105,7 @@
                 android:layout_marginLeft="10dp"
                 android:background="@null"
                 android:gravity="center_vertical"
+                android:inputType="textPassword"
                 android:hint="请输入密码"
                 android:textSize="16sp" />
 

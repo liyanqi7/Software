@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import com.example.lyq.software.R;
 import com.example.lyq.software.ui.activity.AddExampleActivity;
+import com.example.lyq.software.ui.activity.ShopPrivateActivity;
 
 /**
  * Created by lyq on 2017/11/3.
@@ -53,6 +54,7 @@ public class AddPopWindow extends PopupWindow implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ll_message:
+                v.getContext().startActivity(new Intent(v.getContext(),ShopPrivateActivity.class));
                 AddPopWindow.this.dismiss();
                 break;
             case R.id.ll_addExample:

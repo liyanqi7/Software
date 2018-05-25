@@ -56,7 +56,23 @@
         <activity android:name=".ui.activity.CreateShopActivity" />
         <activity android:name=".ui.activity.MyFollowActivity" />
         <activity android:name=".ui.activity.AddRequirementActivity" />
-        <activity android:name=".ui.activity.AddExampleActivity"></activity>
+        <activity android:name=".ui.activity.AddExampleActivity" />
+        <activity android:name=".ui.activity.ChooseAddressActivity" />
+
+        <provider
+            android:name=".ui.storage.SearchContentProvider"
+            android:authorities="com.jiding.content"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".ui.activity.SearchActivity" />
+        \
+        <activity android:name=".ui.activity.ShopPrivateActivity" />
+        <activity android:name=".ui.activity.SearchResultActivity" />
+        <activity android:name=".ui.activity.ExampleDetailActivity" />
+        <activity android:name=".ui.activity.SecondLevelActivity" />
+        <activity android:name=".base.ServerShopActivity" />
+        <activity android:name=".ui.activity.RecommendShopActivity"></activity>
     </application>
 
 </manifest>

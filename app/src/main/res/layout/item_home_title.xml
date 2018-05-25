@@ -22,6 +22,7 @@
             android:background="@mipmap/icon_home_location"/>
 
         <TextView
+            android:id="@+id/tv_city"
             android:layout_marginTop="3dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,25 +34,26 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_search"
         android:layout_width="0dp"
+        android:layout_height="35dp"
         android:layout_weight="7"
-        android:layout_height="30dp"
-        android:background="@drawable/back_corner_search"
+        android:background="@drawable/back_corner_search_white"
         android:gravity="center_vertical">
 
         <ImageView
-            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@mipmap/icon_search"/>
+            android:layout_marginLeft="10dp"
+            android:background="@mipmap/icon_search" />
 
         <TextView
-            android:textColor="@color/text_gray"
-            android:textSize="16sp"
-            android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="搜索"/>
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/text_gray"
+            android:textSize="16sp"
+            android:hint="搜索" />
 
     </LinearLayout>
 

@@ -3,27 +3,36 @@ package com.example.lyq.software.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.lyq.software.R;
+import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.activity.AddRequirementActivity;
+import com.example.lyq.software.ui.activity.LoginActivity;
 import com.example.lyq.software.ui.activity.RequirementDetailActivity;
 import com.example.lyq.software.ui.adapter.AddRequirementAdapter;
 import com.example.lyq.software.ui.bean.Requirement;
+import com.example.lyq.software.utils.SpUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddRequirementsFragment extends Fragment {
+
     private List<Requirement> requirementList = new ArrayList<>();
+    private String userName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_requirements,null,false);
+        userName = SpUtils.getTokenId(getContext(), Constants.TOKENID);
         requirementList.clear();//清除List
         initRequirement();
         AddRequirementAdapter adapter = new AddRequirementAdapter(getContext(),R.layout.item_add_requirement,requirementList);
@@ -32,12 +41,17 @@ public class AddRequirementsFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Requirement requirement = requirementList.get(position);
-                Intent intent = new Intent();
-                intent.putExtra("type",requirement.getType());
-                intent.setClass(getContext(), RequirementDetailActivity.class);
-                startActivity(intent);
-//                Toast.makeText(getContext(), requirement.getType(), Toast.LENGTH_SHORT).show();
+                if (!TextUtils.isEmpty(userName)){
+                    Requirement requirement = requirementList.get(position);
+                    Intent intent = new Intent();
+                    intent.putExtra("type",requirement.getType());
+                    intent.putExtra("authority","公开");
+                    intent.setClass(getContext(), RequirementDetailActivity.class);
+                    startActivity(intent);
+                } else {
+                    startActivity(new Intent(getContext(), LoginActivity.class));
+                    Toast.makeText(getContext(), "请先登录，在发布...", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return view;

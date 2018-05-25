@@ -243,7 +243,7 @@ public class PersonalActivity extends BaseActivity implements View.OnClickListen
                 SpUtils.putHead(getBaseContext(),Constants.HEAD,result);
                 Log.i(TAG, "图片地址 " + BASE_URL + result);
                 Glide.with(getBaseContext())
-                        .load(BASE_URL + result)
+                        .load(Constants.BASE_URL + result)
                         .into(ivHead);
             }
         }

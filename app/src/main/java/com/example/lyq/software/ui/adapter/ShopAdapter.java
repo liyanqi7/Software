@@ -19,6 +19,7 @@ import com.example.lyq.software.ui.activity.OrderProcessActivity;
 import com.example.lyq.software.ui.bean.Login;
 import com.example.lyq.software.ui.bean.Shop;
 import com.example.lyq.software.ui.bean.Volume;
+import com.example.lyq.software.utils.SpUtils;
 
 import java.util.List;
 
@@ -97,14 +98,12 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
                 intent.putExtra("shopData",shop);
                 intent.putExtra("userData",user);
                 intent.putExtra("volumeData",volume);
-                intent.putExtra("stateData","Browse");
+                intent.putExtra("stateData","Browse");//判断进入店铺的方式，是通过直接进入，还是处理申请
                 intent.setClass(mActivity, OrderProcessActivity.class);
                 mActivity.startActivity(intent);
             }
         });
     }
-
-
 
     @Override
     public int getItemCount() {

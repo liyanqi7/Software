@@ -1,13 +1,14 @@
 package com.example.lyq.software.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.TextView;
-
 import com.example.lyq.software.R;
+import com.example.lyq.software.base.ServerShopActivity;
+import com.example.lyq.software.ui.ife.ShopService;
 import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.adapter.ShopAdapter;
 import com.example.lyq.software.ui.bean.Login;
@@ -15,43 +16,44 @@ import com.example.lyq.software.ui.bean.Shop;
 import com.example.lyq.software.ui.bean.Volume;
 import com.example.lyq.software.utils.HttpUtil;
 import com.example.lyq.software.utils.SpUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.Callback;
 
-public class MyFollowActivity extends AppCompatActivity {
+public class MyFollowActivity extends Activity{
 
     public List<Shop> shopList = new ArrayList<Shop>();
     public List<Login> userList = new ArrayList<Login>();
     public List<Volume> volumeList = new ArrayList<Volume>();
     private ShopAdapter adapter;
+    private TextView tvTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_follow);
+        initView();
+        initData();
+    }
+
+    private void initView() {
         String type = getIntent().getStringExtra("type");
-        TextView tvType = (TextView) findViewById(R.id.tv_type);
-        tvType.setText(type);
+        tvTitle = (TextView) findViewById(R.id.tv_title);
+        tvTitle.setText(type);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        Log.e("TAG", "onResponse: " + "3333");
         //使用adapter先初始化界面，再传值进adapter
         adapter = new ShopAdapter(shopList,userList,volumeList,this);
         recyclerView.setAdapter(adapter);
-        initData();
     }
 
     private void initData() {
@@ -87,9 +89,8 @@ public class MyFollowActivity extends AppCompatActivity {
         JSONArray userArray = object.getJSONArray("userList");
         JSONArray volumeArray = object.getJSONArray("countList");
         Log.e("TAG", "Follow: " + shopArray);
-        Log.e("TAG", "foloww: " + userArray);
+        Log.e("TAG", "follow: " + userArray);
         Log.e("TAG", "parseJSONWithGSON: " + volumeArray);
-//        shopList.addAll((Collection<? extends Shop>) shopArray);
         Shop shop = null;
         Login user = null;
         Volume volume = null;
@@ -122,4 +123,5 @@ public class MyFollowActivity extends AppCompatActivity {
             }
         });
     }
+
 }

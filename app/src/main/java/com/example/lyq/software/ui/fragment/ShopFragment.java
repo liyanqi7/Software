@@ -44,15 +44,18 @@ public class ShopFragment extends Fragment {
     public List<Login> userList = new ArrayList<Login>();
     public List<Volume> volumeList = new ArrayList<Volume>();
     private ShopAdapter adapter;
-    //    public static ShopFragment newInstance() {
-//        ShopFragment fragment = new ShopFragment();
-//        return fragment;
-//    }
+    private View view;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shop, container, false);
+        view = inflater.inflate(R.layout.fragment_shop, container, false);
+        initView();
+        initData();
+        return view;
+    }
+
+    private void initView() {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -60,13 +63,6 @@ public class ShopFragment extends Fragment {
         //使用adapter先初始化界面，再传值进adapter
         adapter = new ShopAdapter(shopList,userList,volumeList,getActivity());
         recyclerView.setAdapter(adapter);
-        initData();
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     private void initData() {

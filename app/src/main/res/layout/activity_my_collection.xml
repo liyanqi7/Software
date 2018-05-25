@@ -9,26 +9,20 @@
 
     <include layout="@layout/item_title_type"/>
 
-    <ScrollView
+    <TextView
+        android:id="@+id/prompt"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
-        android:overScrollMode="never">
+        android:gravity="center"
+        android:text="你搜索的结果为空~"
+        android:textColor="@color/text_orange"
+        android:visibility="gone"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="none"/>
-
-        </LinearLayout>
-
-    </ScrollView>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"/>
 
 </LinearLayout>
 

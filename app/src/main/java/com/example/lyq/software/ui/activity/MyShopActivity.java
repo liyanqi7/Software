@@ -1,5 +1,6 @@
 package com.example.lyq.software.ui.activity;
 
+import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -65,6 +66,11 @@ public class MyShopActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(Build.VERSION.SDK_INT >= 21){
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.text_black_2));
+        }
         setContentView(R.layout.activity_my_shop);
         initView();
         initData();
@@ -120,7 +126,7 @@ public class MyShopActivity extends AppCompatActivity implements View.OnClickLis
             shop.setCity(obj.getString("city"));
             shop.setNature(obj.getString("nature"));
         }
-//        Log.e("TAG", "parseSHOPWithGSON: " + shop.getCompany() );
+        SpUtils.putShopName(this,Constants.SHOPNAME,shop.getUserName());//将店铺的ID保存
         for (int i = 0; i < userArray.length(); i++) {
             user = new Login();
             JSONObject obj = userArray.getJSONObject(i);

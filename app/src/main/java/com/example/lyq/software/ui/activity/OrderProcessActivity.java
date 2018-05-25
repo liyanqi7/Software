@@ -1,10 +1,12 @@
 package com.example.lyq.software.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -80,13 +82,15 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_process);
+
+        if(Build.VERSION.SDK_INT >= 21){
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            getWindow().setStatusBarColor(getResources().getColor(R.color.text_black_2));
+        }
         userName = SpUtils.getTokenId(getBaseContext(), Constants.TOKENID);
         initView();
         initData();
-        selectTab(HOMEPAGE);//初始化fragment
-        if (!(userName.isEmpty())){ //判断是否为空，不能用(userName == null)
-            doJudgeFollow();//判断订单是否被收藏,初始化collectionState的值
-        }
     }
 
     private void initData() {
@@ -95,7 +99,15 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
         user = (Login) getIntent().getSerializableExtra("userData");
         volume = (Volume) getIntent().getSerializableExtra("volumeData");
         visitor = getIntent().getStringExtra("stateData");
+        //初始化fragment
+        selectTab(HOMEPAGE);
+        //判断是否为空，不能用(userName == null)
+        if (!(userName.isEmpty())){
+            //判断订单是否被收藏,初始化collectionState的值
+            doJudgeFollow();
+        }
         Glide.with(this).load(Constants.BASE_URL + user.getHead()).into(ivImage);
+        SpUtils.putShopName(this,Constants.SHOPNAME,shop.getUserName());//将店铺的ID保存
         Log.e("TAG", "initData: "+shop.getCompany() );
         tvCompany.setText(shop.getCompany());
         tvProvince.setText(shop.getProvince());
@@ -125,9 +137,7 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
         tvFollow = (TextView) findViewById(R.id.tv_follow);
         llHire = (LinearLayout) findViewById(R.id.ll_hire);
         ivPop = (ImageView) findViewById(R.id.iv_pop);
-
         tvHomePage = (TextView) findViewById(R.id.tv_homePage);
-//        tvOrder = (TextView) findViewById(R.id.tv_order);
         tvDeal = (TextView) findViewById(R.id.tv_deal);
         tvData = (TextView) findViewById(R.id.tv_data);
         vHomePage = findViewById(R.id.v_homePage);
@@ -136,12 +146,12 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
         vDeal = findViewById(R.id.v_deal);
         ivPop.setVisibility(View.GONE);
         tvHomePage.setOnClickListener(this);
-//        tvOrder.setOnClickListener(this);
         tvDeal.setOnClickListener(this);
         tvData.setOnClickListener(this);
         llDelete.setOnClickListener(this);
         llAgreen.setOnClickListener(this);
         llFollow.setOnClickListener(this);
+        llHire.setOnClickListener(this);
     }
 
     private void selectTab(int i) {
@@ -162,18 +172,9 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
                 } else {
                     //如果对应的Fragment已经实例化，则直接显示出来
                     transaction.show(mShopHomeFragment);
-//                    transaction.commit();
                 }
                 break;
             case 1:
-//                tvOrder.setTextColor(this.getResources().getColor(R.color.text_orange));
-//                vOrder.setBackgroundColor(this.getResources().getColor(R.color.text_orange));
-//                if (mMyApplyFragment == null) {
-//                    mMyApplyFragment = new MyApplyFragment();
-//                    transaction.add(R.id.content, mMyApplyFragment);
-//                } else {
-//                    transaction.show(mMyApplyFragment);
-//                }
                 break;
             case 2:
                 tvDeal.setTextColor(this.getResources().getColor(R.color.text_orange));
@@ -183,7 +184,6 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
                     transaction.add(R.id.content, mExampleFragment);
                 } else {
                     transaction.show(mExampleFragment);
-//                    transaction.commit();
                 }
                 break;
             case 3:
@@ -209,9 +209,6 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
         if (mShopHomeFragment!= null) {
             transaction.hide(mShopHomeFragment);
         }
-//        if (mMyApplyFragment != null) {
-//            transaction.hide(mMyApplyFragment);
-//        }
         if (mExampleFragment != null) {
             transaction.hide(mExampleFragment);
         }
@@ -222,11 +219,9 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
 
     private void resetTab() {
         tvHomePage.setTextColor(this.getResources().getColor(R.color.text_gray));
-//        tvOrder.setTextColor(this.getResources().getColor(R.color.text_gray));
         tvDeal.setTextColor(this.getResources().getColor(R.color.text_gray));
         tvData.setTextColor(this.getResources().getColor(R.color.text_gray));
         vHomePage.setBackgroundColor(this.getResources().getColor(R.color.back_gray));
-//        vOrder.setBackgroundColor(this.getResources().getColor(R.color.back_gray));
         vDeal.setBackgroundColor(this.getResources().getColor(R.color.back_gray));
         vData.setBackgroundColor(this.getResources().getColor(R.color.back_gray));
     }
@@ -238,9 +233,6 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
             case R.id.tv_homePage:
                 selectTab(HOMEPAGE);
                 break;
-//            case R.id.tv_order:
-//                selectTab(ORDER);
-//                break;
             case R.id.tv_deal:
                 selectTab(DEAL);
                 break;
@@ -257,7 +249,6 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.ll_follow:
                 if (!userName.isEmpty()){
-//                    doFollow();
                     if (followState.equals("true")){
                         doDeleteFollow();
                     } else {
@@ -267,6 +258,17 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
                     this.finish();
                     startActivity(new Intent(this,LoginActivity.class));
                     overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+                    Toast.makeText(this, "请先登录在收藏...", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case R.id.ll_hire:
+                if (!TextUtils.isEmpty(userName)){
+                    Intent addIntent = new Intent();
+                    addIntent.putExtra("authority",shop.getUserName());
+                    addIntent.setClass(OrderProcessActivity.this,AddRequirementActivity.class);
+                    startActivity(addIntent);
+                } else {
+                    startActivity(new Intent(this,LoginActivity.class));
                     Toast.makeText(this, "请先登录在收藏...", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -341,7 +343,8 @@ public class OrderProcessActivity extends AppCompatActivity implements View.OnCl
 
     private void doJudgeFollow() {
         String url = Constants.BASE_URL + "/judgeFollowServlet";
-        RequestBody body = new FormBody.Builder()//以form表单的形式发送数据
+        //以form表单的形式发送数据
+        RequestBody body = new FormBody.Builder()
                 .add("userName",userName)
                 .add("shopName",shop.getUserName())
                 .build();

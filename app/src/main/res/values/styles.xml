@@ -7,25 +7,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!--<style name="AppTheme" parent="AppBaseTheme">-->
-        <!--<item name="android:windowNoTitle">true</item>-->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
-    <!--</style>-->
-
-    <!--<style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
-
-    <!--</style>-->
-
-    <!-- Application theme. -->
-    <!--<style name="AppTheme" parent="AppBaseTheme">-->
-        <!--<item name="android:windowNoTitle">true</item>-->
-        <!--<item name="colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="colorAccent">@color/colorAccent</item>-->
-    <!--</style>-->
-
     <style name="AppThemeprice" parent="Theme.AppCompat.Light.NoActionBar"></style>
     
     <style name="BottomDialog" parent="@android:style/Theme.Dialog">
@@ -62,5 +43,7 @@
         <item name="android:windowEnterAnimation">@anim/fade_in</item>
         <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
+
+    <!--<style name="TranslucentSystemBar" parent="@style/AppTheme.NoActionBar"/>-->
 
 </resources>

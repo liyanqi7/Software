@@ -60,14 +60,6 @@ public class MyFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my, container, false);
         initView();
-//        String tokenId = SpUtils.getTokenId(getContext(),Constants.TOKENID);
-//        Log.e("1", "onCreateView: " + tokenId);
-//        if (!tokenId.toString().isEmpty())
-//        {
-//            String nick = SpUtils.getNick(getContext(),Constants.NICK);
-//            changeHead(nick);
-//        }
-//        ！！！！！！！！！！！！！！！！！！！Fragment与Activity交互的生命周期问题
         return view;
     }
 

@@ -1,5 +1,8 @@
 package com.example.lyq.software.ui.bean;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -116,5 +119,25 @@ public class Images implements Serializable{
 
     public String getImage9(){
         return image9;
+    }
+
+    public static Images setImages(JSONObject json){
+        try {
+            return new Images(
+                    json.getString("releaseId"),
+                    json.getString("image1"),
+                    json.getString("image2"),
+                    json.getString("image3"),
+                    json.getString("image4"),
+                    json.getString("image5"),
+                    json.getString("image6"),
+                    json.getString("image7"),
+                    json.getString("image8"),
+                    json.getString("image9")
+            );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

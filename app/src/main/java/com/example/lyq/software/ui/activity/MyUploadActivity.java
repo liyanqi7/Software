@@ -3,6 +3,7 @@ package com.example.lyq.software.ui.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 import com.example.lyq.software.R;
 import com.example.lyq.software.base.ServerActivity;
@@ -16,22 +17,31 @@ public class MyUploadActivity extends ServerActivity {
 
     private ReleaseAdapter adapter;
     private String state;
+    private TextView tvTitle;
+    private TextView prompt;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_upload);
+        initView();
         String type = getIntent().getStringExtra("type");
+        tvTitle.setText(type);
+        initServerData();
+    }
+
+    private void initView() {
+        //state值不能再setAdapter之后获取，否则传入adapter的值为空
         state = getIntent().getStringExtra("state");
-        TextView tvType = (TextView) findViewById(R.id.tv_type);
-        tvType.setText(type);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        tvTitle = (TextView) findViewById(R.id.tv_title);
+        prompt = (TextView) findViewById(R.id.prompt);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         //使用adapter先初始化界面，再传值进adapter
-        adapter = new ReleaseAdapter(releaseList,imagesList,userList,state,MyUploadActivity.this);
+        adapter = new ReleaseAdapter(releaseList,imageList,userList,state,MyUploadActivity.this);
         recyclerView.setAdapter(adapter);
-        initServerData();
     }
 
     @Override
@@ -51,6 +61,13 @@ public class MyUploadActivity extends ServerActivity {
 
     @Override
     public void updateUI() {
+        //更新数据，只更新获取过来的
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void promptUI() {
+        prompt.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 }

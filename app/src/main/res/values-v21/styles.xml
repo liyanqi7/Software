@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--<style name="AppTheme" parent="AppBaseTheme">-->
-        <!--<item name="android:colorPrimary">@color/colorPrimary</item>-->
-        <!--<item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>-->
-        <!--<item name="android:colorAccent">@color/colorAccent</item>-->
+    <!--<style name="TranslucentSystemBar" parent="@style/AppTheme.NoActionBar" >-->
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
+        <!--<item name="android:windowTranslucentNavigation">true</item>-->
+        <!--&lt;!&ndash;Android 5.x 开始需要把状态栏颜色设为透明，否则会呈现系统默认的灰色&ndash;&gt;-->
+        <!--<item name="android:statusBarColor">@android:color/transparent</item>-->
     <!--</style>-->
+
 </resources>

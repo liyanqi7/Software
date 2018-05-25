@@ -58,6 +58,7 @@ public class RequirementDetailActivity extends BaseActivity implements View.OnCl
     private TextView tvTypeTwo;
     private LinearLayout llType;
     int REQUEST_TYPETWO = 100;
+    private String authority;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +137,7 @@ public class RequirementDetailActivity extends BaseActivity implements View.OnCl
     private void initParameter() {
         Intent intent = getIntent();
         String type = intent.getStringExtra("type");
+        authority = intent.getStringExtra("authority");
         tvType.setText(type);
     }
 
@@ -226,6 +228,7 @@ public class RequirementDetailActivity extends BaseActivity implements View.OnCl
         builder.addFormDataPart("typeTwo",tvTypeTwo.getText().toString());
         builder.addFormDataPart("beginTime",tvBegin.getText().toString());
         builder.addFormDataPart("endTime",tvEnd.getText().toString());
+        builder.addFormDataPart("authority",authority);
         // 添加上传图片
         for (int i = 0; i < imgPaths.size(); i++) {
             Log.e(TAG, "doPost: "+ imgPaths.get(i));

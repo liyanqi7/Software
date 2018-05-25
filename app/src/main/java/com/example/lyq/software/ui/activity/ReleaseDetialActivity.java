@@ -23,6 +23,7 @@ import com.example.lyq.software.ui.bean.Login;
 import com.example.lyq.software.ui.bean.Register;
 import com.example.lyq.software.ui.bean.Release;
 import com.example.lyq.software.ui.bean.Result;
+import com.example.lyq.software.ui.bean.User;
 import com.example.lyq.software.utils.DateTimeUtil;
 import com.example.lyq.software.utils.HttpUtil;
 import com.example.lyq.software.utils.SpUtils;
@@ -50,7 +51,7 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
     private TextView tvDescript;
     private Release release;
     private Images images;
-    private Login user;
+    private User user;
     private TextView tvPrice;
     private TextView tvBegin;
     private TextView tvEnd;
@@ -67,39 +68,19 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
     private TextView tvCancel;
     private LinearLayout llUpload;
     private LinearLayout llCreate;
+    private ImageView image1;
+    private ImageView image2;
+    private ImageView image3;
+    private ImageView image4;
+    private ImageView image5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_release_detial);
-        release = (Release) getIntent().getSerializableExtra("releaseData");//接收对象参数的传递
-        images = (Images) getIntent().getSerializableExtra("imageData");
-        user = (Login) getIntent().getSerializableExtra("userData");
-        state = getIntent().getStringExtra("state");
-        userName = SpUtils.getTokenId(getBaseContext(), Constants.TOKENID);
-        Log.e("user", "onCreate: " + userName);
-        if (!(userName.isEmpty())){ //判断是否为空，不能用(userName == null)
-            doJudgeShop();//判断是否有店铺，决定用户的申请权限
-//            doJudgeApply();
-            doJudgeCollection();//判断订单是否被收藏,初始化collectionState的值
-        }
         initView();
+        initData();
         initState();
-    }
-
-    private void initState() {
-        llUpload.setVisibility(View.GONE);
-        tvCancel.setVisibility(View.GONE);
-        tvConfirm.setVisibility(View.GONE);
-        if (state.equals("任务中")){
-            tvConfirm.setVisibility(View.VISIBLE);
-        }
-        if (state.equals("upload")){
-            llUpload.setVisibility(View.VISIBLE);
-        }
-        if (state.equals("发布中")){
-            tvCancel.setVisibility(View.VISIBLE);
-        }
     }
 
     private void initView() {
@@ -122,15 +103,28 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
         ivCollection = (ImageView) findViewById(R.id.iv_collection);
         tvCollection = (TextView) findViewById(R.id.tv_collection);
         llCollection.setOnClickListener(this);
-        ImageView image1 = (ImageView) findViewById(R.id.image1);
-        ImageView image2 = (ImageView) findViewById(R.id.image2);
-        ImageView image3 = (ImageView) findViewById(R.id.image3);
-        ImageView image4 = (ImageView) findViewById(R.id.image4);
-        ImageView image5 = (ImageView) findViewById(R.id.image5);
-        ImageView image6 = (ImageView) findViewById(R.id.image6);
-        ImageView image7 = (ImageView) findViewById(R.id.image7);
-        ImageView image8 = (ImageView) findViewById(R.id.image8);
-        ImageView image9 = (ImageView) findViewById(R.id.image9);
+        image1 = (ImageView) findViewById(R.id.image1);
+        image2 = (ImageView) findViewById(R.id.image2);
+        image3 = (ImageView) findViewById(R.id.image3);
+        image4 = (ImageView) findViewById(R.id.image4);
+        image5 = (ImageView) findViewById(R.id.image5);
+    }
+
+    private void initData() {
+        /**
+         * 接收对象参数的传递
+         */
+        release = (Release) getIntent().getSerializableExtra("releaseData");
+        images = (Images) getIntent().getSerializableExtra("imageData");
+        user = (User) getIntent().getSerializableExtra("userData");
+        userName = SpUtils.getTokenId(getBaseContext(), Constants.TOKENID);
+        //判断是否为空，不能用(userName == null)
+        if (!(userName.isEmpty())){
+            //判断是否有店铺，决定用户的申请权限
+            doJudgeShop();
+            //判断订单是否被收藏,初始化collectionState的值
+            doJudgeCollection();
+        }
         Glide.with(this)
                 .load(Constants.BASE_URL + user.getHead())
                 .into(ciHead);
@@ -160,6 +154,26 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
                 .into(image5);
     }
 
+    /**
+     * 我的上传(MyUploadActivity)和一般浏览公用同一个(ReleaseDetailActivity)
+     */
+    private void initState() {
+        state = getIntent().getStringExtra("state");
+        Log.e(Constants.TAG, "initState: " + state );
+        llUpload.setVisibility(View.GONE);
+        tvCancel.setVisibility(View.GONE);
+        tvConfirm.setVisibility(View.GONE);
+        if (state.equals("任务中")){
+            tvConfirm.setVisibility(View.VISIBLE);
+        }
+        if (state.equals("upload")){
+            llUpload.setVisibility(View.VISIBLE);
+        }
+        if (state.equals("发布中")){
+            tvCancel.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -175,7 +189,6 @@ public class ReleaseDetialActivity extends BaseActivity implements View.OnClickL
                 break;
             case R.id.ll_collection:
                 if (!userName.isEmpty()){
-//                    doJudgeCollection();
                     if (collectionState.equals("true")){
                         doDeleteCollection();
                     } else {

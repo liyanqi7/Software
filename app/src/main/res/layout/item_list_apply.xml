@@ -7,7 +7,7 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="10dp"
-    android:background="@drawable/back_corner_search">
+    android:background="@drawable/back_corner_search_white">
 
     <TextView
         android:id="@+id/tv_descript"

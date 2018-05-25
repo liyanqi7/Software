@@ -7,41 +7,7 @@
     android:orientation="vertical"
     tools:context="com.example.lyq.software.ui.activity.WebActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:gravity="center_vertical"
-        android:background="#fff"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp">
-
-            <ImageView
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/icon_back_left" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textColor="@color/text_orange"
-                android:text="网站建设" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    <include layout="@layout/item_title_type"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -72,7 +38,7 @@
                     android:layout_marginTop="1dp">
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/tv_website"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -82,6 +48,7 @@
                         android:textColor="@color/text_orange" />
 
                     <TextView
+                        android:id="@+id/tv_build"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -91,6 +58,7 @@
                         android:gravity="center"/>
 
                     <TextView
+                        android:id="@+id/tv_mobile"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -100,6 +68,7 @@
                         android:gravity="center"/>
 
                     <TextView
+                        android:id="@+id/tv_ui"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -167,6 +136,15 @@
                 <!--android:id="@+id/swipRefresh"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="match_parent">-->
+
+            <TextView
+                android:id="@+id/prompt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="你搜索的结果为空~"
+                android:textColor="@color/text_orange"
+                android:visibility="gone"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"

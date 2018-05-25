@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 import com.example.lyq.software.R;
 import com.example.lyq.software.base.BaseActivity;
 import com.example.lyq.software.base.ServerActivity;
@@ -30,18 +33,27 @@ import okhttp3.Response;
 public class AppActivity extends ServerActivity {
 
     private ReleaseAdapter adapter;
+    private TextView prompt;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        initView();
+        initServerData();
+    }
+
+    private void initView() {
+        TextView tvTitle = (TextView) findViewById(R.id.tv_title);
+        tvTitle.setText("APP开发");
+        prompt = (TextView) findViewById(R.id.prompt);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         String state = "upload";
-        adapter = new ReleaseAdapter(releaseList,imagesList,userList,state,AppActivity.this);
+        adapter = new ReleaseAdapter(releaseList,imageList,userList,state,AppActivity.this);
         recyclerView.setAdapter(adapter);
-        initServerData();
     }
 
     public String getURL() {
@@ -54,6 +66,7 @@ public class AppActivity extends ServerActivity {
         FormBody body = new FormBody.Builder()
                 .add("type", type)
                 .add("state", "发布中")
+                .add("level","first")
                 .build();
         return body;
     }
@@ -62,4 +75,11 @@ public class AppActivity extends ServerActivity {
     public void updateUI() {
         adapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void promptUI() {
+        prompt.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
 }

@@ -9,19 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.example.lyq.software.R;
 import com.example.lyq.software.lib.Constants;
 import com.example.lyq.software.ui.activity.ReleaseDetialActivity;
 import com.example.lyq.software.ui.bean.Images;
-import com.example.lyq.software.ui.bean.Login;
 import com.example.lyq.software.ui.bean.Release;
+import com.example.lyq.software.ui.bean.User;
 import com.example.lyq.software.utils.DateTimeUtil;
-
 import java.util.Date;
 import java.util.List;
-
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -31,14 +28,20 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHolder> {
 
     private List<Release> mReleaseList;
-    private List<Images> mImagesList;
-    private List<Login> mUserList;
+    private List<Images> mImageList;
+    private List<User> mUserList;
     private String mState;
     private Activity mActivity;
-    String TAG = "result";
+
+    public ReleaseAdapter(List<Release> releaseList, List<Images> imagesList, List<User> userList, String state, Activity activity) {
+        this.mReleaseList = releaseList;
+        this.mImageList = imagesList;
+        this.mUserList = userList;
+        this.mState = state;
+        this.mActivity = activity;
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder{
-
         View releaseView;
         ImageView ivImage;
         TextView tvDescript;
@@ -63,15 +66,6 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
         }
     }
 
-    public ReleaseAdapter(List<Release> releaseList, List<Images> imagesList, List<Login> userList, String state, Activity activity) {
-        this.mReleaseList = releaseList;
-        this.mImagesList = imagesList;
-        this.mUserList = userList;
-        this.mState = state;
-        this.mActivity = activity;
-        Log.e(TAG, "ReleaseAdapter: "+ mReleaseList.size());
-    }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_release,parent,false);
@@ -81,8 +75,8 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();//案列第一行代码，RecyclerView的点击事件
                 Release release = mReleaseList.get(position);
-                Images images = mImagesList.get(position);
-                Login user = mUserList.get(position);
+                Images images = mImageList.get(position);
+                User user = mUserList.get(position);
                 Intent intent = new Intent(mActivity, ReleaseDetialActivity.class);
                 intent.putExtra("releaseData",release);
                 intent.putExtra("imageData",images);
@@ -94,23 +88,23 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
         return holder;
     }
 
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+        @Override
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         Release release = mReleaseList.get(position);
-        Images images = mImagesList.get(position);
-        Login users = mUserList.get(position);
+        Images images = mImageList.get(position);
+        User users = mUserList.get(position);
         Glide.with(mActivity)
                 .load(Constants.BASE_URL + users.getHead())
                 .into(holder.ciHead);
         Glide.with(mActivity)
                 .load(Constants.BASE_URL + images.getImage1())
-//                .placeholder(R.mipmap.ic_launcher)
+//                .placeholder(R.mipmap.icon_load)
                 .dontAnimate()
                 .into(holder.ivImage);
-        Log.e(TAG, "getImage1: " + images.getImage1());
+        Log.e(Constants.TAG, "getImage1: " + images.getImage1());
         Glide.with(mActivity)
                 .load(Constants.BASE_URL + images.getImage2())
-//                .placeholder(R.mipmap.ic_launcher)
+//                .placeholder(R.mipmap.icon_load)
                 .dontAnimate()
                 .into(holder.ivImage2);
         Glide.with(mActivity)
@@ -124,9 +118,9 @@ public class ReleaseAdapter extends RecyclerView.Adapter<ReleaseAdapter.ViewHold
         String timeLength = DateTimeUtil.formatFriendly(date);
         holder.tvDate.setText(timeLength);
         holder.tvPrice.setText(release.getPrice());
-        Log.e(TAG, "mReleaseList: "+ mReleaseList.size() );
-        Log.e(TAG, "mImagesList: "+ mImagesList.size() );
-        Log.e(TAG, "mUserList: "+ mUserList.size());
+        Log.e(Constants.TAG, "mReleaseList: "+ mReleaseList.size() );
+        Log.e(Constants.TAG, "mImagesList: "+ mImageList.size() );
+        Log.e(Constants.TAG, "mUserList: "+ mUserList.size());
     }
 
     @Override

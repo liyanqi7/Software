@@ -21,6 +21,7 @@ public class AddRequirementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_requirement);
+        final String authority = getIntent().getStringExtra("authority");
         requirementList.clear();//清除List
         initRequirement();
         AddRequirementAdapter adapter = new AddRequirementAdapter(this,R.layout.item_add_requirement,requirementList);
@@ -32,6 +33,7 @@ public class AddRequirementActivity extends AppCompatActivity {
                 Requirement requirement = requirementList.get(position);
                 Intent intent = new Intent();
                 intent.putExtra("type",requirement.getType());
+                intent.putExtra("authority",authority);
                 intent.setClass(AddRequirementActivity.this, RequirementDetailActivity.class);
                 startActivity(intent);
 //                Toast.makeText(getContext(), requirement.getType(), Toast.LENGTH_SHORT).show();

@@ -1,10 +1,15 @@
 package com.example.lyq.software.ui.bean;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+
 /**
  * Created by lyq on 2018/4/19.
  */
 
-public class Example {
+public class Example implements Serializable {
     String userName;
     String design;
     String theme;
@@ -24,10 +29,10 @@ public class Example {
         super();
     }
 
-    public Example(String userName, String theme, String type, String price, String system,String design,
+    public Example(String userName, String theme, String price, String type, String system,String design,
                    String image1, String image2, String image3, String image4, String image5,
                    String image6, String image7, String image8, String image9){
-        super();
+//        super();
         this.userName = userName;
         this.design = design;
         this.theme = theme;
@@ -163,6 +168,31 @@ public class Example {
 
     public String getImage9(){
         return image9;
+    }
+
+    public static Example setExample(JSONObject json){
+        try {
+            return new Example(
+                    json.getString("userName"),
+                    json.getString("theme"),
+                    json.getString("price"),
+                    json.getString("type"),
+                    json.getString("system"),
+                    json.getString("design"),
+                    json.getString("image1"),
+                    json.getString("image2"),
+                    json.getString("image3"),
+                    json.getString("image4"),
+                    json.getString("image5"),
+                    json.getString("image6"),
+                    json.getString("image7"),
+                    json.getString("image8"),
+                    json.getString("image9")
+            );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

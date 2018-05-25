@@ -1,7 +1,7 @@
 package com.example.lyq.software.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.lyq.software.R;
+import com.example.lyq.software.base.TokenSave;
 import com.example.lyq.software.lib.Constants;
+import com.example.lyq.software.ui.activity.ChooseAddressActivity;
 import com.example.lyq.software.ui.adapter.ShopAdapter;
 import com.example.lyq.software.ui.bean.Login;
 import com.example.lyq.software.ui.bean.Shop;
@@ -42,30 +44,55 @@ public class NearByFragment extends Fragment {
     private ShopAdapter adapter;
     private TextView tvCount;
     private RecyclerView recyclerView;
+    private TextView tvChange;
+    private TextView tvCity;
+    private LinearLayoutManager layoutManager;
+    private String location;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_classification, container, false);
+        view = inflater.inflate(R.layout.fragment_near_by, container, false);
         initView();
-        initData();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        location = TokenSave.getInstance(getContext()).getAddress();
+        if (location != null){
+            tvCity.setText(location);
+        }
+        /**
+         * 从服务端获取店铺数据
+         */
+        getShopData();
     }
 
     private void initView() {
         tvCount = (TextView) view.findViewById(R.id.tv_count);
+        tvChange = (TextView) view.findViewById(R.id.tv_change);
+        tvCity = (TextView) view.findViewById(R.id.tv_city);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        //使用adapter先初始化界面，再传值进adapter
-        adapter = new ShopAdapter(shopList,userList,volumeList,getActivity());
+        adapter = new ShopAdapter(shopList,userList,volumeList,getActivity());//使用adapter先初始化界面，再传值进adapter
         recyclerView.setAdapter(adapter);
+        tvChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ChooseAddressActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    private void initData() {
+    private void getShopData() {
         String url = Constants.BASE_URL + "/nearbyShopServlet";
+        String city = TokenSave.getInstance(getContext()).getAddress();
         RequestBody body = new FormBody.Builder()
-                .add("city", "南京")
+                .add("city", location)
                 .build();
         HttpUtil.post(url, body, new Callback() {
             @Override

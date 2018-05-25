@@ -166,6 +166,7 @@ public class CreateShopActivity extends AppCompatActivity implements View.OnClic
         builder.addFormDataPart("province",province);
         builder.addFormDataPart("city",city);
         builder.addFormDataPart("detail", detail);
+        builder.addFormDataPart("nature", nature);
         for (int i = 0; i < imgPaths.size(); i++) {
             builder.addFormDataPart("image"+i, imgPaths.get(i),
                     RequestBody.create(MediaType.parse("image/jpeg"), new File(imgPaths.get(i))));

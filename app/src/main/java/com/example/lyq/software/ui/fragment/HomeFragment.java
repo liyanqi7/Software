@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -21,7 +22,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.lyq.software.R;
+import com.example.lyq.software.base.TokenSave;
 import com.example.lyq.software.ui.activity.AppActivity;
+import com.example.lyq.software.ui.activity.ChooseAddressActivity;
+import com.example.lyq.software.ui.activity.RecommendShopActivity;
+import com.example.lyq.software.ui.activity.SearchActivity;
 import com.example.lyq.software.ui.activity.WeChatActivity;
 import com.example.lyq.software.ui.activity.WebActivity;
 import com.example.lyq.software.ui.adapter.HomeBannerAdapter;
@@ -53,6 +58,10 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     private UploadFragment uploadFragment;
     private FragmentManager manager;
     private ShopFragment shopFragment;
+    private TextView tvCity;
+    private LinearLayout llSearch;
+    private TextView tvBuild;
+    private TextView tvModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,31 +76,40 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        Log.e("tag", "onStop: " );
-//        FragmentManager manager = getActivity().getSupportFragmentManager();
-//        //获取FragmentTransaction对象
-//        FragmentTransaction transaction = manager.beginTransaction();
-//        manager.beginTransaction().remove(uploadFragment);
+    public void onResume() {
+        super.onResume();
+        String location = TokenSave.getInstance(getContext()).getAddress();
+        if (!TextUtils.isEmpty(location)){
+            tvCity.setText(location);
+        }
     }
 
     private void initEvents() {
+        llSearch.setOnClickListener(this);
+        tvCity.setOnClickListener(this);
         tvOrder.setOnClickListener(this);
         tvShop.setOnClickListener(this);
         llWeb.setOnClickListener(this);
         llApp.setOnClickListener(this);
         llWeChat.setOnClickListener(this);
+        tvBuild.setOnClickListener(this);
+        tvModel.setOnClickListener(this);
     }
 
     private void initView() {
+        llSearch = (LinearLayout) view.findViewById(R.id.ll_search);
+        tvCity = (TextView) view.findViewById(R.id.tv_city);
         tvOrder = (TextView) view.findViewById(R.id.tv_order);
         tvShop = (TextView) view.findViewById(R.id.tv_shop);
         vOrder = view.findViewById(R.id.v_order);
         vShop = view.findViewById(R.id.v_shop);
+        //订单分类栏
         llWeb = (LinearLayout) view.findViewById(R.id.ll_web);
         llApp = (LinearLayout) view.findViewById(R.id.ll_app);
         llWeChat = (LinearLayout) view.findViewById(R.id.ll_weChat);
+        //热门商家推荐栏
+        tvBuild = (TextView) view.findViewById(R.id.tv_build);
+        tvModel = (TextView) view.findViewById(R.id.tv_model);
     }
 
     //实现悬浮效果的Scroll
@@ -131,8 +149,15 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     @Override
     public void onClick(View v) {
-        resetNav();//将导航初始化(选择是订单或店铺)
+        //将导航初始化(选择是订单或店铺)
+        resetNav();
         switch (v.getId()){
+            case R.id.ll_search:
+                startActivity(new Intent(getContext(), SearchActivity.class));
+                break;
+            case R.id.tv_city:
+                startActivity(new Intent(getContext(), ChooseAddressActivity.class));
+                break;
             case R.id.tv_order:
                 selectTab(ORDER);
                 break;
@@ -148,8 +173,19 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
             case R.id.ll_weChat:
                 startActivity(new Intent(getContext(), WeChatActivity.class));
                 break;
+            case R.id.tv_build:
+                startRecommend("网站定制");
+                break;
+            case R.id.tv_model:
+                startRecommend("模板建站");
+                break;
         }
+    }
 
+    private void startRecommend(String title) {
+        Intent intent = new Intent();
+        intent.setClass(getContext(), RecommendShopActivity.class);
+        intent.putExtra("title",title);
     }
 
     private void resetNav() {
@@ -162,14 +198,14 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     private void selectTab(int i) {
         //获取FragmentManager对象
 //        manager = getActivity().getSupportFragmentManager();
-        manager = getChildFragmentManager();//总结就是: getFragmentManager()是本级别管理者, getChildFragmentManager()是下一级别管理者.这实际上是一个树形管理结构.
+        //总结就是:getFragmentManager()是本级别管理者, getChildFragmentManager()是下一级别管理者.这实际上是一个树形管理结构.
+        manager = getChildFragmentManager();
         //获取FragmentTransaction对象
         FragmentTransaction transaction = manager.beginTransaction();
         //先隐藏所有的Fragment
         hideFragments(transaction);
         switch (i){
             case 0:
-                Log.e("tag", "selectTab: "+i );
                 tvOrder.setTextColor(getResources().getColor(R.color.text_orange));
                 vOrder.setVisibility(View.VISIBLE);
                 //如果对应的Fragment没有实例化，则进行实例化，并显示出来
