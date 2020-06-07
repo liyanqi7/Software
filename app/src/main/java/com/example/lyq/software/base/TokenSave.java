@@ -16,6 +16,7 @@ public class TokenSave {
     private String mAddress;
 
     /**
+     * 类名+方法名调用的方法叫做静态方法,属于类级别方法,不希望类的构造方法是public的,也就是用户无法直接new出来的,通常就会通过这么一个静态方法来调用获取实例
      * 一般提倡通过类名来使用，因为静态方法只要定义了类，不必建立类的实例就可使用
      * @param context
      * @return

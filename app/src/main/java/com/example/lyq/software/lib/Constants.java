@@ -5,8 +5,7 @@ package com.example.lyq.software.lib;
  */
 
 public class Constants {
-//    public static final String BASE_URL = "http://192.168.3.249:8080/Software";
-    public static final String BASE_URL = "http://192.168.29.80:8080/Software";
+    public static final String BASE_URL = "http://192.168.0.100:8080/Software";
     public static final String TAG = "log";
     public static final String FIRST_OPEN = "first_open";
     public static final String TOKENID = "tokenId";
